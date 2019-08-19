@@ -4,5 +4,4 @@ public class testEntity {
     public String name;
     private String address;
 
-
 }
