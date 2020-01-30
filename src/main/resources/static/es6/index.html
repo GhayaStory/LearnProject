@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        // base();
+        function base(){
+            for (var i = 0; i < 5; i++) {
+                console.log(i);
+            }
+            console.log("循环之外" + i);//内部var 定义情况下，在外面引用同名未定义变量时，会输出内部的变量值
+            for (let j = 0; j < 5; j++) {
+                console.log(j);
+            }
+            //console.log("循环之外" + j);//局部变量  不可在外引用
+            const num = 1;
+            //console.log(num++);//不可修改的常量
+        }
+        // arrEs6();
+        function arrEs6(){
+            //#解析数组
+            let arr = [2,5,-10,15];
+            //#以往数值取值方法   取某些元素
+            let x1 = arr[0],x2 = arr[1];//
+            //#es6
+            let [y1,y2] = arr;//y1=2 y2=5
+            let [,,y3,y4] = arr;//y3=-10 y4=15
+            //#除第一个元素以外的其他元素 封装新数组
+            let [,...rest] = arr;//克隆
+            console.log(rest);//(3) [5, -10, 15]
+
+        }
+        // objEs6();
+        function objEs6() {
+            //#解析对象
+            let p = {name:"ghaya",age:"26"};
+            let {name,age} = p;
+            console.log(name);//ghaya
+            console.log(age);//26
+            //let {n,a} = p;
+            //console.log(n);//undefined   //数组有索引，对象没有，要用同属性名取
+            //console.log(a);//undefined
+            let {name:n,age:a} = p;//要这么取name赋值给n
+            //#取出girl的name
+            p = {name:"ghaya",age:"26",girl:{name:"rose",age:"18"},other:"other"};
+            let {girl:{name:girlName}} = p;
+            console.log(girlName);
+            let {...obj} = p;//克隆
+            console.log(obj);
+            console.log(obj==p);
+        }
+        //funcEs6();
+        function funcEs6(){
+            //函数
+            function sum(a,b){
+                return a+b;
+            }
+            //          参数a,b  返回 a+b
+            const add = (a,b) => a+ b;
+            console.log(add(123,152));
+
+            const p = {
+                name:"ghaya",
+                age: 26,
+                /*sayHello:function(){
+                    console.log("hello");
+                }*/
+                sayHello(){
+                    console.log("hello es6");
+                }
+            }
+
+            /*const hello = function(person){
+                console.log(person.name,person.age);
+            }*/
+            const hello = function({name,age}){//直接在接收参数时解析
+                console.log(name,age);
+            }
+            hello(p);
+            // p.sayHello();
+
+        }
+
+        mapandreduceEs6();
+        function mapandreduceEs6(){
+            //全部转int
+            let arr = ['2','5','-10','15','-20'];
+            console.log(arr);
+            let arr2 = arr.map(s => parseInt(s));
+            console.log(arr2);
+            //           遍历
+            let a = arr2.reduce((a,b) => a+b);//求和
+            console.log(a);
+            let b = arr2.reduce((a,b) => a+b,5);//求和  初始值
+            console.log(b);
+        }
+    </script>
+</body>
+</html>

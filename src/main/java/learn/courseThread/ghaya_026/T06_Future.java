@@ -6,6 +6,9 @@ package learn.courseThread.ghaya_026;
 
 import java.util.concurrent.*;
 
+/**
+ * 多线程并行执行，取回结果
+ */
 public class T06_Future {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         FutureTask<Integer> task = new FutureTask<>(()->{
