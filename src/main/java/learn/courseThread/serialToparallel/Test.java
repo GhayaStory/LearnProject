@@ -4,9 +4,7 @@ package learn.courseThread.serialToparallel;
 import com.sun.org.apache.xpath.internal.functions.FuncTrue;
 import learn.Base.GhayaRes;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 
 /**
  * demo解决问题，
@@ -23,8 +21,30 @@ public class Test {
 
     public static void main(String[] args) throws Exception{
 //        test.t1();
-        test.t2();
+//        test.t2();
+        test.t3();
     }
+
+    public void t3() throws Exception {
+        //用线程池
+        ExecutorService eServiuce = Executors.newFixedThreadPool(5);
+        Future<GhayaRes> futureTask = eServiuce.submit(() -> {
+            GhayaRes res = service.s1();
+            return res;
+        });
+        Future<GhayaRes> futureTask2 = eServiuce.submit(() -> {
+            GhayaRes res = service.s2();
+            return res;
+        });
+        //取出并行调用的结果s
+        GhayaRes res = new GhayaRes("s0 Res");
+        res.putAll(futureTask.get());
+        res.putAll(futureTask2.get());
+        System.out.println(res.getAll());
+
+        eServiuce.shutdown();
+    }
+
 
     public void t2() throws Exception {
         Callable<GhayaRes> ghayaResCallable = () -> {
