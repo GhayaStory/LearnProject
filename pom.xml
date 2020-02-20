@@ -23,6 +23,10 @@
             </plugin>
         </plugins>
     </build>
+    <modules>
+        <module>fastDFS</module>
+        <module>ghaya-temp-demo</module>
+    </modules>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
         <dependency>
