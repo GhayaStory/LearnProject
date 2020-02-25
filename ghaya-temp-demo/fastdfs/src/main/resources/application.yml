@@ -4,6 +4,7 @@ fdfs:
     pool:
         jmx-enabled: false
     thumb.image:
-        width: 100
-        height: 100
+        width: 300
+        height: 300
     tracker-list:  192.168.50.249:22122
+#    tracker-list:  192.168.160.60:22122

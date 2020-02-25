@@ -27,8 +27,8 @@ public class FastdfsApplicationTests {
         FileInputStream inputStream = new FileInputStream(file);
 
 //        StorePath storePath = fastFileStorageClient.uploadFile(inputStream, file.length(), extName, null);
-//        StorePath storePath = fastFileStorageClient.uploadFile("group1",inputStream,fileName.length(),"jpg");
-        StorePath storePath = fastFileStorageClient.uploadFile("TimgCircle",inputStream,fileName.length(),"jpg");
+//        StorePath storePath = fastFileStorageClient.uploadFile("group2",inputStream,fileName.length(),extName);
+        StorePath storePath = fastFileStorageClient.uploadFile("TcardsImg",inputStream,fileName.length(),extName);
 
         System.out.println(storePath.getGroup());
         System.out.println(storePath.getPath());
