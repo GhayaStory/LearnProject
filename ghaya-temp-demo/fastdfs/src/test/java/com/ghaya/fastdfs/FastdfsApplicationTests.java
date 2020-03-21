@@ -21,6 +21,7 @@ public class FastdfsApplicationTests {
 
     @Test
     public void contextLoads() throws FileNotFoundException {
+        System.out.println(1);
         File file = new File("d://bug.jpg");
         String fileName = file.getName();
         String extName = fileName.substring(fileName.lastIndexOf(".") + 1);

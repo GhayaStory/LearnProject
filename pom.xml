@@ -24,7 +24,6 @@
         </plugins>
     </build>
     <modules>
-        <module>fastDFS</module>
         <module>ghaya-temp-demo</module>
     </modules>
     <dependencies>
