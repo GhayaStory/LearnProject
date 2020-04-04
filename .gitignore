@@ -16,5 +16,5 @@
 *.class
 /.idea
 *.iml
-/vue-cli-demo/*
+/ghaya-temp-demo/vue-cli-demo/*
 vue-cli-demo.zip
