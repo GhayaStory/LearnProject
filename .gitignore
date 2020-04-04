@@ -16,3 +16,5 @@
 *.class
 /.idea
 *.iml
+/vue-cli-demo/*
+vue-cli-demo.zip
