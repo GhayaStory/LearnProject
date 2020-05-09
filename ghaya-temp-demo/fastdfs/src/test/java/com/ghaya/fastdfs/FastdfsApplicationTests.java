@@ -22,14 +22,22 @@ public class FastdfsApplicationTests {
     @Test
     public void contextLoads() throws FileNotFoundException {
         System.out.println(1);
-        File file = new File("d://bug.jpg");
+        String url = "D://Development//Work//纳智2.0//指标导入模板.xls";
+//        String url = "d://bug.jpg";
+        File file = new File(url);
         String fileName = file.getName();
         String extName = fileName.substring(fileName.lastIndexOf(".") + 1);
         FileInputStream inputStream = new FileInputStream(file);
+        System.out.println(file.length());
 
 //        StorePath storePath = fastFileStorageClient.uploadFile(inputStream, file.length(), extName, null);
-//        StorePath storePath = fastFileStorageClient.uploadFile("group2",inputStream,fileName.length(),extName);
-        StorePath storePath = fastFileStorageClient.uploadFile("TcardsImg",inputStream,fileName.length(),extName);
+//        StorePath storePath = fastFileStorageClient.uploadFile("group2",inputStream,file.length(),extName);
+        String grourpName = "Tother";
+//        String grourpName = "TpersonImg";
+//        String grourpName = "Tother";
+//        String grourpName = "Tother";
+//        String grourpName = "Tother";
+        StorePath storePath = fastFileStorageClient.uploadFile(grourpName, inputStream, file.length(), extName);
 
         System.out.println(storePath.getGroup());
         System.out.println(storePath.getPath());
