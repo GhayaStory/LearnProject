@@ -1,4 +1,4 @@
-package com.ghaya.qianfeng.closure;
+package learn.lambda.qianfeng.closure;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;

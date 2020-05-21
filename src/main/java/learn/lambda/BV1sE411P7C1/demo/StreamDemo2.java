@@ -1,18 +1,11 @@
-package com.ghaya.demo;
+package learn.lambda.BV1sE411P7C1.demo;
 
 
-import com.ghaya.entity.User;
+import learn.lambda.BV1sE411P7C1.entity.User;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Stream Api

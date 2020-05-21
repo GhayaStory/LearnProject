@@ -1,7 +1,7 @@
-package com.ghaya.qianfeng.syntax;
+package learn.lambda.qianfeng.syntax;
 
 
-import com.ghaya.qianfeng.interfaces.LambdaSingleReturnSingleParameter;
+import learn.lambda.qianfeng.interfaces.LambdaSingleReturnSingleParameter;
 
 /**
  * 进阶

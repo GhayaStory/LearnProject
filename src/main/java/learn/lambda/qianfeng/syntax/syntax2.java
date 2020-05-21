@@ -1,9 +1,9 @@
-package com.ghaya.qianfeng.syntax;
+package learn.lambda.qianfeng.syntax;
 
-import com.ghaya.qianfeng.interfaces.LambdaNoneReturnMutipleParameter;
-import com.ghaya.qianfeng.interfaces.LambdaNoneReturnSingleParameter;
-import com.ghaya.qianfeng.interfaces.LambdaSingleReturnMutipleParameter;
-import com.ghaya.qianfeng.interfaces.LambdaSingleReturnSingleParameter;
+import learn.lambda.qianfeng.interfaces.LambdaNoneReturnMutipleParameter;
+import learn.lambda.qianfeng.interfaces.LambdaNoneReturnSingleParameter;
+import learn.lambda.qianfeng.interfaces.LambdaSingleReturnMutipleParameter;
+import learn.lambda.qianfeng.interfaces.LambdaSingleReturnSingleParameter;
 
 /**
  * 精简方法

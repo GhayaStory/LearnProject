@@ -1,6 +1,8 @@
-package com.ghaya.qianfeng.exercise;
+package learn.lambda.qianfeng.exercise;
 
-import com.ghaya.qianfeng.data.Person;
+
+
+import learn.lambda.qianfeng.data.Person;
 
 import java.util.ArrayList;
 import java.util.Collections;

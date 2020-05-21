@@ -1,4 +1,4 @@
-package com.ghaya.qianfeng.data;
+package learn.lambda.qianfeng.data;
 
 public class Person {
     public String name;

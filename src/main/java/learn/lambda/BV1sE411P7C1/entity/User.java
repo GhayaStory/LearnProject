@@ -1,10 +1,11 @@
-package com.ghaya.entity;
+package learn.lambda.BV1sE411P7C1.entity;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.function.Predicate;
+
 
 @Data
 @AllArgsConstructor

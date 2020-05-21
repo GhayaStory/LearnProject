@@ -1,4 +1,4 @@
-package com.ghaya.qianfeng.functional;
+package learn.lambda.qianfeng.functional;
 
 import java.util.function.*;
 

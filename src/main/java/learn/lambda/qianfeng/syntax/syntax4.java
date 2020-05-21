@@ -1,6 +1,7 @@
-package com.ghaya.qianfeng.syntax;
+package learn.lambda.qianfeng.syntax;
 
-import com.ghaya.qianfeng.data.Person;
+
+import learn.lambda.qianfeng.data.Person;
 
 /**
  * 进阶2
