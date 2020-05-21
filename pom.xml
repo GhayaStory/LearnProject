@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>ghaya-temp-demo</module>
+        <module>LearnDemo</module>
     </modules>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
@@ -47,7 +48,4 @@
             </plugin>
         </plugins>
     </build>
-
-
-
 </project>
