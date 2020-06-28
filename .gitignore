@@ -13,6 +13,7 @@
 # doc/**/*.txt
 
 **/target
+/target
 /target/*
 *.class
 /.idea
