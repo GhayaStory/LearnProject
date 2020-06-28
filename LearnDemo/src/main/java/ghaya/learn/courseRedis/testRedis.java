@@ -2,7 +2,9 @@ package ghaya.learn.courseRedis;
 
 import redis.clients.jedis.Jedis;
 
-
+/**
+ * title:redisDemo
+ */
 public class testRedis {
     public static void main(String[] args) {
         //连接本地的 Redis 服务
