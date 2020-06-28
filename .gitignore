@@ -12,7 +12,7 @@
 # 忽略 doc/ 目录下所有扩展名为 txt 的文件
 # doc/**/*.txt
 
-/target
+**/target
 /target/*
 *.class
 /.idea
