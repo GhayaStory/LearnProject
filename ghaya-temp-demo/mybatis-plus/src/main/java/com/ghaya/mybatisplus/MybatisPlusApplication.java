@@ -4,6 +4,10 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
+/**
+ * 20201021 出问题了  有空再修
+ */
 @SpringBootApplication
 //加载mybatis的mapper借口所在的路径
 @MapperScan("com.ghaya.mybatisplus.dao")

@@ -21,7 +21,7 @@ public class StreamDemo3 {
     public static void main(String[] args) {
         List<Map<String, Object>> demoListMap = Gtest.getDemoListMap();
         System.out.println(demoListMap);
-//        demoListMap.sort((a,b) -> Integer.parseInt(a.get("score").toString()) - Integer.parseInt(b.get("score").toString()));
+//        demoListMap.Sort((a,b) -> Integer.parseInt(a.get("score").toString()) - Integer.parseInt(b.get("score").toString()));
         demoListMap.sort(Comparator.comparingInt(a -> Integer.parseInt(a.get("score").toString())));//升序
         System.out.println(demoListMap);
         demoListMap.sort(Comparator.comparingInt(a -> Integer.parseInt(((Map<String, Object>)a).get("score").toString())).reversed());//降序

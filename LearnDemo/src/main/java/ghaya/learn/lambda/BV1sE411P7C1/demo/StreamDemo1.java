@@ -47,7 +47,7 @@ public class StreamDemo1 {
         HashSet<Object> set = new HashSet<>();
         Stream<Object> stream = set.stream();
         //数组
-        String[] arrPlayers = {"1","2","abc"};
+        String[] arrPlayers = {"1","2","SimpleVehicleFactory"};
         String arrPlayersStr = Stream.of(arrPlayers).filter(s -> !s.equals("")).map(String::toUpperCase).collect(Collectors.joining(","));
         System.out.println(arrPlayersStr);
 
