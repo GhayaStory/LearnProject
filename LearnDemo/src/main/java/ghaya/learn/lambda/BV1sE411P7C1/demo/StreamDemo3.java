@@ -1,16 +1,12 @@
 package ghaya.learn.lambda.BV1sE411P7C1.demo;
 
 
-import ghaya.learn.lambda.BV1sE411P7C1.entity.User;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import static ghaya.learn.Base.test.Gtest;
+import static ghaya.learn.lambda.BV1sE411P7C1.entity.test.Gtest;
 
 /**
  * Stream Api

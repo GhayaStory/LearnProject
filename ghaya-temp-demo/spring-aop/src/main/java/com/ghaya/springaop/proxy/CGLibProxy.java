@@ -1,5 +1,6 @@
 package com.ghaya.springaop.proxy;
 
+import com.ghaya.springaop.proxy.impl.ProductImpl;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -26,12 +27,16 @@ public class CGLibProxy<T> implements MethodInterceptor {
         return rs;
     }
 
-
     void before() {
         System.out.println("before.....CGLibProxy.......");
     }
 
     void after() {
         System.out.println("after......CGLibProxy......");
+    }
+
+    public static void main(String[] args) {
+        ProductImpl product = new CGLibProxy<ProductImpl>(new ProductImpl()).getProxy();
+        product.show("CGLib动态代理");
     }
 }

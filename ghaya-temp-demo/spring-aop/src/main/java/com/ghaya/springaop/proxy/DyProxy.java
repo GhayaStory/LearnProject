@@ -1,11 +1,13 @@
 package com.ghaya.springaop.proxy;
 
+import com.ghaya.springaop.proxy.impl.TeacherImpl;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
- * 动态代理
+ * JDK动态代理
  * 实现InvocationHandler接口
  */
 public class DyProxy<T> implements InvocationHandler {
@@ -24,7 +26,7 @@ public class DyProxy<T> implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         before();
-        Object rs = method.invoke(this.target, args);
+        Object rs = method.invoke(this.target, args);//业务方法
         after();
         return null;
     }
@@ -36,6 +38,11 @@ public class DyProxy<T> implements InvocationHandler {
 
     void after() {
         System.out.println("after......动态代理......");
+    }
+
+    public static void main(String[] args) {
+        ITeacher teacher = new DyProxy<ITeacher>(new TeacherImpl()).getProxy();
+        teacher.teach("动态代理");
     }
 
 }

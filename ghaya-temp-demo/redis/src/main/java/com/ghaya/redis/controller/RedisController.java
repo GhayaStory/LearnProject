@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 分布式锁实现
+ * https://www.bilibili.com/video/BV1FJ411a7gv
  */
 @RestController
 public class RedisController {
@@ -60,6 +61,7 @@ public class RedisController {
 //        Boolean isExist = stringRedisTemplate.opsForValue().setIfAbsent(key, "ange");
 //        Boolean isExist = stringRedisTemplate.opsForValue().setIfAbsent(key, "ange",10,TimeUnit.SECONDS);  //当业务流程超出10秒  会出现恶性循环失效锁  下一个请求删除了上一个的锁
         Boolean isExist = stringRedisTemplate.opsForValue().setIfAbsent(key, lockValue,10,TimeUnit.SECONDS);  //用uuid来解决别人删了我的锁 失效锁问题
+
 
         if (!isExist) {
             //            System.out.println(Thread.currentThread().getId()+Thread.currentThread().getName());

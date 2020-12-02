@@ -6,7 +6,7 @@ package ghaya.learn.desginMode.factorymethod;
  */
 public class testFactory {
     public static void main(String[] args) {
-//        Moveable m = new Broom();
+//        Moveable move = new Broom();
         Moveable m = new CarFactory().createCar();
         m.go();
     }
