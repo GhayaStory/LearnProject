@@ -13,7 +13,6 @@ import java.util.Date;
 @NoArgsConstructor
 //全参构造
 @AllArgsConstructor
-@TableName("t_user")
 public class User {
 
     private Integer id;//id
