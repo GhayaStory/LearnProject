@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 @RestController
 public class TestController {
 
-    static
 
     @RequestMapping("/thread1")
     public String getLock1() {

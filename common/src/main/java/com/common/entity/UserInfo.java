@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -18,6 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 //全参构造
 @AllArgsConstructor
+@ToString
 public class UserInfo {
 
     private Integer id;//id
