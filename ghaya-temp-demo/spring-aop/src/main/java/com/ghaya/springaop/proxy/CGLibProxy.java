@@ -15,8 +15,8 @@ public class CGLibProxy<T> implements MethodInterceptor {
         this.target = target;
     }
 
-    public T getProxy(){
-        return (T)Enhancer.create(this.target.getClass(),this);
+    public T getProxy() {
+        return (T) Enhancer.create(this.target.getClass(), this);
     }
 
     @Override

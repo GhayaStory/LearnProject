@@ -20,16 +20,16 @@ import java.util.Date;
 public class User_Info {
 
 
-    @TableId(value="id" , type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;//id
     private Integer user_id;//用户id
-    @TableField(value="nicoName")
+    @TableField(value = "nicoName")
     private String nicoName;//昵称
     private String address;//地址
-    @TableField(value="creTime")
+    @TableField(value = "creTime")
     private Date creTime;//创建时间
     private String cre;//创建人
-    @TableField(value="modiTime")
+    @TableField(value = "modiTime")
     private Date modiTime;//修改时间
     private String modi;//修改人
 

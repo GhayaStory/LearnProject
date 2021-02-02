@@ -9,9 +9,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LogAnnotation {
-    String value()  default "";
+    String value() default "";
 
-    String desc() default  "";
+    String desc() default "";
 
     boolean flag() default true;
 

@@ -18,8 +18,6 @@ class SpringAopApplicationTests {
     UserService userService;
 
 
-
-
     @Test
     void contextLoads() {
 
@@ -30,14 +28,14 @@ class SpringAopApplicationTests {
 
     //静态代理
     @Test
-    void test01(){
+    void test01() {
         TeacherProxy teacherProxy = new TeacherProxy(new TeacherImpl());
         teacherProxy.teach("静态代理");
     }
 
     //动态代理
     @Test
-    void test02(){
+    void test02() {
         ITeacher teacher = new DyProxy<ITeacher>(new TeacherImpl()).getProxy();
         teacher.teach("动态代理");
     }
@@ -45,7 +43,7 @@ class SpringAopApplicationTests {
 
     //CGLib动态代理
     @Test
-    void test03(){
+    void test03() {
         ProductImpl product = new CGLibProxy<ProductImpl>(new ProductImpl()).getProxy();
         product.show("CGLib动态代理");
     }

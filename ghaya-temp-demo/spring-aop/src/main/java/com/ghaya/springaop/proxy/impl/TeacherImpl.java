@@ -8,7 +8,7 @@ public class TeacherImpl implements ITeacher {
         System.out.println("I am " + name);
     }
 
-    public void teachEn(){
+    public void teachEn() {
         System.out.println("teach Eng");
     }
 }

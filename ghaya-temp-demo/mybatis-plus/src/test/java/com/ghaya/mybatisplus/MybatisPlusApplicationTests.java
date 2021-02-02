@@ -28,7 +28,7 @@ class MybatisPlusApplicationTests {
     }
 
     @Test
-    public void testInsert(){
+    public void testInsert() {
         User_Info user_info = new User_Info();
         user_info.setUser_id(1);
         user_info.setNicoName("Ghaya");
@@ -45,7 +45,7 @@ class MybatisPlusApplicationTests {
     }
 
     @Test
-    public void testCustom(){
+    public void testCustom() {
         //注解型自定义
 //        List<User_Info> allUserInfo = userInfoMapper.findAllUserInfo();
 //        System.out.println(allUserInfo);

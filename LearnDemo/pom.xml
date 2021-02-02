@@ -12,6 +12,9 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>LearnDemo</artifactId>
     <packaging>pom</packaging>
+    <modules>
+        <module>my_rpc</module>
+    </modules>
 
     <dependencies>
         <!--Java Object Layout 看内存布局用的-->

@@ -18,20 +18,20 @@ import java.util.concurrent.TimeUnit;
 public class testController {
 
     @GetMapping("/hello")
-    public String hello(){
+    public String hello() {
         return "hello laowan!";
     }
 
     @GetMapping("/testGet")
     public String testGet(String name) throws Exception {
-        if (name==null) {
+        if (name == null) {
             throw new BusinessException(ResultCode.PAPAM_IS_BLANK);
         }
         return "laowan!";
     }
 
     @PostMapping("/testPost")
-    public String testPost(){
+    public String testPost() {
         return "post laowan!";
     }
 }

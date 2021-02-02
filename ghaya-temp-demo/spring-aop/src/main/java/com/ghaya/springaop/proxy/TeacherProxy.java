@@ -5,7 +5,7 @@ import com.ghaya.springaop.proxy.impl.TeacherImpl;
 /**
  * 代理类
  */
-public class TeacherProxy implements ITeacher{
+public class TeacherProxy implements ITeacher {
     private TeacherImpl teacher;
 
     public TeacherProxy(TeacherImpl teacher) {
@@ -19,11 +19,11 @@ public class TeacherProxy implements ITeacher{
         after();
     }
 
-    void before(){
+    void before() {
         System.out.println("before............");
     }
 
-    void after(){
+    void after() {
         System.out.println("after............");
     }
 

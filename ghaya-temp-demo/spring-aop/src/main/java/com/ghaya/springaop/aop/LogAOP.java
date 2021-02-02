@@ -22,17 +22,17 @@ public class LogAOP {
      * (3)service的任意方法的执行：executio(*com.abc.service.*(.))
      */
 //    @Pointcut("execution(* com.ghaya.springaop.service..*(..))")
-
     @Pointcut("@annotation(LogAnnotation)")
-    public void pointcut(){
+    public void pointcut() {
 
     }
-//    @Before("pointcut()")
+
+    //    @Before("pointcut()")
 //    @Before("execution(* com.ghaya.springaop.service..*(..))")
     @Before("pointcut()")
-    public void before(JoinPoint joinPoint){
+    public void before(JoinPoint joinPoint) {
         System.out.println("before------------Log");
-        MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();//方法签名
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();//方法签名
 //        String className = joinPoint.getTarget().getClass().getName();
 //        String methodName = methodSignature.getName();
 //        System.out.println(className+"----"+methodName);
@@ -41,8 +41,6 @@ public class LogAOP {
         LogAnnotation logAnnotation = methodSignature.getMethod()
                 .getDeclaredAnnotation(LogAnnotation.class);
         System.out.println(logAnnotation.toString());
-
-
 
 
     }
@@ -56,8 +54,6 @@ public class LogAOP {
         return result;
 
     }
-
-
 
 
 }

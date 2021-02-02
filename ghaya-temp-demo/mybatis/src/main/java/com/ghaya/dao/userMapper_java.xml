@@ -6,6 +6,6 @@
 <mapper namespace="com.ghaya.dao.UserMapper">
     <select id="selectUser" resultType="com.ghaya.pojo.User">
         select * from user
-     </select>
+    </select>
 
 </mapper>

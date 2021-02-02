@@ -15,7 +15,7 @@ public class RedisApplication {
 
 
     @Bean
-    public Redisson redisson(){
+    public Redisson redisson() {
         Config config = new Config();
         //主从(单机)
         config.useSingleServer().setAddress("redis://192.168.1.206:6379").setDatabase(0);

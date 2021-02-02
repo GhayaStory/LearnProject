@@ -19,13 +19,14 @@ public class GlobalExceptionHandler {
 
     /**
      * 业务异常处理
+     *
      * @param e
      * @return
      * @throws Exception
      */
     @ResponseBody
-    @ExceptionHandler( BusinessException.class )
-    public CommonResp handleBusinessException (BusinessException e ) throws Exception {
+    @ExceptionHandler(BusinessException.class)
+    public CommonResp handleBusinessException(BusinessException e) throws Exception {
         log.error("BusinessException error", e);
         return CommonResp.create(e.getResultCode());
     }

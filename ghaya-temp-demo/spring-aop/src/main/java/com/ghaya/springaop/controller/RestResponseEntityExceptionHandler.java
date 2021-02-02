@@ -19,10 +19,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     public ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        log.error(ex.getMessage(),ex);
+        log.error(ex.getMessage(), ex);
         if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
             request.setAttribute("javax.servlet.error.exception", ex, 0);
         }
-        return new ResponseEntity( new CommonResp(status.value(),ex.getMessage()), headers, status);
+        return new ResponseEntity(new CommonResp(status.value(), ex.getMessage()), headers, status);
     }
 }

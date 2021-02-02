@@ -18,7 +18,7 @@ public class MyTest {
         UserMapper mapper = session.getMapper(UserMapper.class);
         List<User> users = mapper.selectUser();
 
-        for (User user: users){
+        for (User user : users) {
             System.out.println(user);
         }
         session.close();
@@ -39,7 +39,7 @@ public class MyTest {
     public void testAddUser() {
         SqlSession session = MybatisUtils.getSession();
         UserMapper mapper = session.getMapper(UserMapper.class);
-        User user = new User(4,"王五","zxcvbn");
+        User user = new User(4, "王五", "zxcvbn");
         int i = mapper.addUser(user);
         System.out.println(i);
         session.commit(); //提交事务,重点!不写的话不会提交到数据库
@@ -75,8 +75,8 @@ public class MyTest {
         UserMapper mapper = session.getMapper(UserMapper.class);
         HashMap<String, Object> map = new HashMap<>();
 //        map.put("userid",6);
-        map.put("username","啊啊啊");
-        map.put("password","123asd");
+        map.put("username", "啊啊啊");
+        map.put("password", "123asd");
         int i = mapper.addUserForMap(map);
         System.out.println(i);
         session.commit(); //提交事务,重点!不写的话不会提交到数据库

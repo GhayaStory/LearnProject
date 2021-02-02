@@ -48,8 +48,6 @@ public class RedisController {
 
 
     /**
-     *
-     *
      * @return
      */
     @RequestMapping("/getLock2")
@@ -60,7 +58,7 @@ public class RedisController {
         //10,TimeUnit.SECONDS  超时销毁
 //        Boolean isExist = stringRedisTemplate.opsForValue().setIfAbsent(key, "ange");
 //        Boolean isExist = stringRedisTemplate.opsForValue().setIfAbsent(key, "ange",10,TimeUnit.SECONDS);  //当业务流程超出10秒  会出现恶性循环失效锁  下一个请求删除了上一个的锁
-        Boolean isExist = stringRedisTemplate.opsForValue().setIfAbsent(key, lockValue,10,TimeUnit.SECONDS);  //用uuid来解决别人删了我的锁 失效锁问题
+        Boolean isExist = stringRedisTemplate.opsForValue().setIfAbsent(key, lockValue, 10, TimeUnit.SECONDS);  //用uuid来解决别人删了我的锁 失效锁问题
 
 
         if (!isExist) {
@@ -84,8 +82,8 @@ public class RedisController {
                 return "fail";
             }
         } finally {
-            if (isExist&&
-                    lockValue.equals(stringRedisTemplate.opsForValue().get(key))){//避免出现别人删了我的锁
+            if (isExist &&
+                    lockValue.equals(stringRedisTemplate.opsForValue().get(key))) {//避免出现别人删了我的锁
                 stringRedisTemplate.delete(key);
             }
         }

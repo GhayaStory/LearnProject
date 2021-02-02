@@ -8,7 +8,8 @@
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://192.168.1.206:3308/mybatis?useSSL=true&amp;useUnicode=true&amp;characterEncoding=utf8"/>
+                <property name="url"
+                          value="jdbc:mysql://192.168.1.206:3308/mybatis?useSSL=true&amp;useUnicode=true&amp;characterEncoding=utf8"/>
                 <property name="username" value="root"/>
                 <property name="password" value="123456"/>
             </dataSource>

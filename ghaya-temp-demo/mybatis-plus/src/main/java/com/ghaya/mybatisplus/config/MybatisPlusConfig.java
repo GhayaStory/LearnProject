@@ -18,10 +18,11 @@ public class MybatisPlusConfig {
 
     /**
      * 注入分页插件
+     *
      * @return
      */
     @Bean
-    public PaginationInterceptor paginationInterceptor(){
+    public PaginationInterceptor paginationInterceptor() {
         return new PaginationInterceptor();
     }
 

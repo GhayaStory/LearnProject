@@ -48,17 +48,17 @@ public class 缓存击穿 {
         return result;
     }
 
-    public List<String> getDataFromCache(){
+    public List<String> getDataFromCache() {
         System.out.println("缓存读取数据");
         return null;
     }
 
-    public List<String> getDataFromDB(){
+    public List<String> getDataFromDB() {
         System.out.println("数据库读取数据");
         return null;
     }
 
-    public void setDataToCache(List<String> list){
+    public void setDataToCache(List<String> list) {
         System.out.println("写入缓存" + list);
     }
 
