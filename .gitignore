@@ -16,7 +16,5 @@
 /target
 /target/*
 *.class
-/.idea
-*.iml
 /ghaya-temp-demo/vue-cli-demo/*
 vue-cli-demo.zip
