@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FUSUsageTrigger">
+    <session id="406185970">
+      <usages-collector id="statistics.spring.core.usages.trigger">
+        <counts>
+          <entry key="fixes.SpringFacetInspection.AddFacetFix" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-temp-demo/fastdfs/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-temp-demo/mybatis-plus/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-temp-demo/redis/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-temp-demo/spring-aop/pom.xml" />
+        <option value="$PROJECT_DIR$/LearnDemo/learn-thread/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-temp-demo/jta/pom.xml" />
+        <option value="$PROJECT_DIR$/common/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-temp-demo/spring-security/pom.xml" />
+        <option value="$PROJECT_DIR$/LearnDemo/learn-jvm/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-temp-demo/swagger-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-temp-demo/mybatis/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/ghaya-temp-demo/jta/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-temp-demo/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
