@@ -12,6 +12,7 @@
         <module name="fastdfs" />
         <module name="learn-jvm" />
         <module name="learn-thread" />
+        <module name="mybatis" />
         <module name="mybatis-plus" />
         <module name="provider" />
         <module name="redis" />
@@ -19,15 +20,12 @@
         <module name="spring-security" />
         <module name="swagger-demo" />
       </profile>
-      <profile name="Annotation profile for mybatis" enabled="true">
-        <sourceOutputDir name="../target/generated-sources/annotations" />
-        <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="mybatis" />
-      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Demo" target="1.8" />
       <module name="spring-temp-demo" target="1.8" />
+      <module name="t" target="1.8" />
+      <module name="ttttt" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

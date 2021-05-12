@@ -28,6 +28,18 @@
         <option value="$PROJECT_DIR$/LearnDemo/learn-jvm/pom.xml" />
         <option value="$PROJECT_DIR$/ghaya-temp-demo/swagger-demo/pom.xml" />
         <option value="$PROJECT_DIR$/ghaya-temp-demo/mybatis/pom.xml" />
+        <option value="$PROJECT_DIR$/GhayaDemo/pom.xml" />
+        <option value="$PROJECT_DIR$/GhayaDemo/fastdfs/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-demo/mybatis/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-demo/mybatis-plus/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-demo/redis/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-demo/spring-aop/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-demo/spring-security/pom.xml" />
+        <option value="$PROJECT_DIR$/ghaya-demo/swagger-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/learn-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/learn-demo/learn-jvm/pom.xml" />
+        <option value="$PROJECT_DIR$/learn-demo/learn-thread/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

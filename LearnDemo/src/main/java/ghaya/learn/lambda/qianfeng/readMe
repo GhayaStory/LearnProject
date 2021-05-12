@@ -1,8 +1,0 @@
-千峰lambda教学
-https://www.bilibili.com/video/BV1sb411j7Ms?p=2
-
-
-使用lambda表达式，要求接口中定义的必须要实现的抽象方法只能有一个
-
-/*修饰函数式接口，接口中的抽象方法只有一个   假如你写多了 会提示报错*/
-@FunctionalInterface
