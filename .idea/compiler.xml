@@ -21,11 +21,5 @@
         <module name="swagger-demo" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Demo" target="1.8" />
-      <module name="spring-temp-demo" target="1.8" />
-      <module name="t" target="1.8" />
-      <module name="ttttt" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
