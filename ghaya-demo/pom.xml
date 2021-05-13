@@ -20,7 +20,6 @@
         <module>spring-aop</module>
         <module>spring-security</module>
         <module>swagger-demo</module>
-
     </modules>
 
 
