@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/.gitignore" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/GhayaDemo" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/GhayaDemo/fastdfs" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/GhayaDemo/mybatis" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/GhayaDemo/mybatis-plus" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/GhayaDemo/redis" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/GhayaDemo/spring-aop" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/GhayaDemo/spring-security" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/GhayaDemo/swagger-demo" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/LearnDemo/learn-jvm" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/LearnDemo/learn-thread" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/.gitignore" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ghaya-demo/mybatis" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ghaya-demo/mybatis-plus" charset="UTF-8" />
