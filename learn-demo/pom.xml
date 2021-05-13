@@ -13,6 +13,8 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>learn-jvm</module>
+        <module>learn-thread</module>
         <module>my_rpc</module>
     </modules>
 
