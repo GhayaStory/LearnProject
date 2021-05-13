@@ -18,3 +18,4 @@
 *.class
 /ghaya-temp-demo/vue-cli-demo/*
 vue-cli-demo.zip
+/.idea
