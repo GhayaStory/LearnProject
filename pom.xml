@@ -13,6 +13,9 @@
         <module>ghaya-demo</module>
         <module>learn-demo</module>
     </modules>
+    <properties>
+        <springboot-version>2.4.5</springboot-version>
+    </properties>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
         <dependency>

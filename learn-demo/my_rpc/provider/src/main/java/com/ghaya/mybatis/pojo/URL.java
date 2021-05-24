@@ -1,4 +1,4 @@
-package com.ghaya.pojo;
+package com.ghaya.mybatis.pojo;
 
 
 public class URL {

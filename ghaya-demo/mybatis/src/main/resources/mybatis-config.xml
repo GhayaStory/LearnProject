@@ -1,3 +1,4 @@
+<!--
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
@@ -15,9 +16,9 @@
             </dataSource>
         </environment>
     </environments>
-    <!--需要注册mapper.xml -->
+    &lt;!&ndash;需要注册mapper.xml &ndash;&gt;
     <mappers>
-        <!--<mapper resource="com/ghaya/dao/userMapper_java.xml"/>--><!--资源文件放在java包下需要maven当中处理资源自动导出问题，不然不会自动把xml加进去-->
+        &lt;!&ndash;<mapper resource="com/ghaya/mapper/userMapper_java.xml"/>&ndash;&gt;&lt;!&ndash;资源文件放在java包下需要maven当中处理资源自动导出问题，不然不会自动把xml加进去&ndash;&gt;
         <mapper resource="mapper/userMapper_resource.xml"/>
     </mappers>
-</configuration>
+</configuration>-->

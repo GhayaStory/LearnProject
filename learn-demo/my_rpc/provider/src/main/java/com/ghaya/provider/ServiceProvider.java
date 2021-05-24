@@ -1,6 +1,6 @@
 package com.ghaya.provider;
 
-import com.ghaya.pojo.URL;
+import com.ghaya.mybatis.pojo.URL;
 import com.ghaya.registry.NativeRegistry;
 import com.ghaya.service.HelloService;
 import com.ghaya.service.impl.HelloServiceImpl;

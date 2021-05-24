@@ -1,7 +1,7 @@
 package com.ghaya.tomcat;
 
-import com.ghaya.pojo.Invocation;
-import com.ghaya.pojo.URL;
+import com.ghaya.mybatis.pojo.Invocation;
+import com.ghaya.mybatis.pojo.URL;
 import com.ghaya.registry.NativeRegistry;
 import org.apache.commons.io.IOUtils;
 

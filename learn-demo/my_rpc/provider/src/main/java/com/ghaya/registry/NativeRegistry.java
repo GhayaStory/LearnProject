@@ -1,6 +1,6 @@
 package com.ghaya.registry;
 
-import com.ghaya.pojo.URL;
+import com.ghaya.mybatis.pojo.URL;
 
 import java.util.HashMap;
 import java.util.Map;
