@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--绑定一个对应的dao/mapper接口-->
+<!--对应接口由@Mapper注解扫描-->
+<!--
+要点
+1.jdbcType=VARCHAR 用于传入设置空值时需要指定，否则会报错
+
+-->
+
+
+<mapper namespace="com.ghaya.mybatis.dao.UserDao">
+
+    <!--<resultMap id="BaseResultMap" type="com.bangdao.zparking.middleplat.master.dal.pojo.AlterApplicationDO">-->
+    <!--<id column="alter_application_id" jdbcType="VARCHAR" property="alterApplicationId" />-->
+    <!--<result column="status" jdbcType="INTEGER" property="status" />-->
+    <!--<result column="remark" jdbcType="VARCHAR" property="remark" />-->
+    <!--<result column="src_system_code" jdbcType="VARCHAR" property="srcSystemCode" />-->
+    <!--<result column="approve_mode_code" jdbcType="VARCHAR" property="approveModeCode" />-->
+    <!--<result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />-->
+    <!--<result column="process_time" jdbcType="TIMESTAMP" property="processTime" />-->
+    <!--<result column="approve_result" jdbcType="INTEGER" property="approveResult" />-->
+    <!--<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />-->
+    <!--<result column="create_by" jdbcType="VARCHAR" property="createBy" />-->
+    <!--<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />-->
+    <!--<result column="update_by" jdbcType="VARCHAR" property="updateBy" />-->
+    <!--<result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />-->
+    <!--<result column="version" jdbcType="INTEGER" property="version" />-->
+    <!--</resultMap>-->
+    <sql id="baseFiled">
+        id,name,age,email
+  </sql>
+
+    <select id="listUser" resultType="com.ghaya.mybatis.pojo.User">
+        select * from user
+    </select>
+
+    <select id="pageUser" parameterType="com.ghaya.mybatis.pojo.query.PageObj" resultType="com.ghaya.mybatis.pojo.User">
+        select * from user
+        <where>
+            <if test="param != null and param != ''">
+                name like concat('%',#{param},'%')
+                <!--     name like concat('%',#{param,jdbcType=VARCHAR},'%') -->
+            </if>
+        </where>
+    </select>
+
+    <select id="queryUserById" resultType="com.ghaya.mybatis.pojo.User">
+        select
+        <include refid="baseFiled"/>
+        from user where id = #{id}
+    </select>
+     <insert id="insertUser" parameterType="com.ghaya.mybatis.pojo.User">
+        insert into user (
+        name,age,email
+        ) values (
+        #{name},#{age},#{email}
+        )
+    </insert>
+
+    <update id="updateUserById" parameterType="com.ghaya.mybatis.pojo.User">
+        update user set name=#{name},age=#{age} ,email=#{email} where id = #{id}
+    </update>
+
+    <delete id="deleteUserById" parameterType="int">
+        delete from user where id = #{id}
+    </delete>
+
+
+</mapper>
