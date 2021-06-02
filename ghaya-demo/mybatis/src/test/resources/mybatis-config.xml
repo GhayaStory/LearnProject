@@ -5,7 +5,10 @@
 <configuration>
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--默认重用执行器-->
         <setting name="defaultExecutorType" value="REUSE"/>
+        <!--关闭一级缓存-->
+        <!--<setting name="localCacheScope" value="STATEMENT"/>-->
     </settings>
     <environments default="development">
         <environment id="development">

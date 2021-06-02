@@ -3,9 +3,8 @@ package com.ghaya.mybatis.dao;
 
 import com.ghaya.mybatis.pojo.User;
 import com.ghaya.mybatis.pojo.query.PageObj;
-import org.apache.ibatis.annotations.CacheNamespace;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,7 +19,6 @@ public interface UserDao {
 	//分页
 	List<User> pageUser(PageObj pageObj);
 
-//	@CacheNamespace
 	User queryUserById(String id);
 
 	int insertUser(User user);
@@ -33,6 +31,18 @@ public interface UserDao {
 
 	@Update("update `user` set name = #{arg1} where id = #{arg0} ")
 	int setName(Integer id, String name);
+
+	@Select("select * from user where id = #{id}")
+	User selectByid(Integer id);
+
+	@Select("select * from user where id = #{id}")
+	User selectByid2(Integer id);
+
+	@Select("select * from user where id = #{id}")
+	@Options(flushCache = Options.FlushCachePolicy.TRUE)//设置刷新缓存
+	User selectByid3(Integer id);
+
+
 
 
 

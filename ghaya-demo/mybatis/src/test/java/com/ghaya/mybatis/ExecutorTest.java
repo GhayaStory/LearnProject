@@ -69,7 +69,6 @@ public class ExecutorTest {
 	//批处理执行器
 	//只针对修改操作
 	//批处理操作必须手动刷新
-	//刷新了也不生效 回头看看
 	@Test
 	public void BatchTest() throws SQLException {
 		BatchExecutor executor = new BatchExecutor(configuration, jdbcTransaction);
@@ -83,7 +82,6 @@ public class ExecutorTest {
 		executor.doUpdate(ms, map);
 		executor.doFlushStatements(false);
 //		connection.commit();//可以设置自动提交
-
 	}
 
 	//baseExecutor
@@ -96,8 +94,6 @@ public class ExecutorTest {
 		System.out.println(query);
 		List<Object> query1 = executor.query(ms, 1, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER);
 		System.out.println(query1);
-
-
 	}
 
 
@@ -137,24 +133,37 @@ public class ExecutorTest {
 	@Test
 	public void firstCacheTest(){
 		UserDao mapper = sqlSession.getMapper(UserDao.class);
-		User user = mapper.queryUserById("1");
-//		RowBounds rowBounds = new RowBounds(5, 10);
-		RowBounds aDefault = RowBounds.DEFAULT;
+		User user1 = mapper.selectByid(1);
+		User user2 = mapper.selectByid2(1);
+		System.out.println(user1==user2);
+//		RowBounds rowBounds = new RowBounds(5, 10);//自定义分页值不走缓存
+		RowBounds aDefault = RowBounds.DEFAULT;//默认分页可以走缓存
 		List<Object> list = sqlSession.selectList("com.ghaya.mybatis.dao.UserDao.queryUserById", "1", aDefault);
-
-		System.out.println(user==list.get(0));
+		System.out.println(user1==list.get(0));
+		//会话级测试
+		User user3 = factory.openSession().getMapper(UserDao.class).queryUserById("1");//新建一个会话则不走缓存
+		System.out.println(user1==user3);
 	}
 
 	/**
-	 *
+	 * 清空缓存的都搞不了
+	 * 1.未手动清空
+	 * 2.未调用flushCache=true的查询
+	 * 3.mapper执行update，commit，rollback方法也会清空缓存
+	 * 4.localCacheScope未设置成STATEMENT(将一级缓存的作用域改为嵌套查询子查询等查询，普通查询不走一级缓存)
 	 */
 	@Test
 	public void firstCacheTest2(){
 		UserDao mapper = sqlSession.getMapper(UserDao.class);
-		User user = mapper.queryUserById("1");
-//		sqlSession.clearCache();
-		User user2 = mapper.queryUserById("1");
+		User user = mapper.selectByid(1);
+//		sqlSession.clearCache();//手动清除缓存
+		User user2 = mapper.selectByid(1);
+		//配置设置为重用执行器，只会编译一次，在一定程度上提高性能
 		System.out.println(user==user2);
+
+		//注解设置刷新缓存
+		User user3 = mapper.selectByid3(1);
+		System.out.println(user==user3);
 	}
 
 
