@@ -1,4 +1,6 @@
-## 
+# Mybatis
+
+
 
 
 
@@ -7,8 +9,6 @@
 ## 三种执行器
 
 ### 相关结构
-
-
 
 ![image-20210602150854473](mybatis.assets/image-20210602150854473.png)
 
@@ -35,6 +35,10 @@
 默认打开，k-v形式
 
 ### 命中条件
+
+
+
+![image-20210602185223647](mybatis.assets/image-20210602185223647.png)
 
 #### 1.运行时参数\
 
@@ -114,7 +118,13 @@ public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBoun
 
 ![image-20210528111809780](mybatis.assets/image-20210528111809780.png)
 
+### 源码解析
 
+![image-20210603100654653](mybatis.assets/image-20210603100654653.png)
+
+BaseExecutor
+
+![image-20210603101039521](mybatis.assets/image-20210603101039521.png)  
 
 ## 二级缓存
 
