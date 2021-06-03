@@ -44,20 +44,28 @@
 
 #### 2.操作配置相关
 
-```tex
-1.sql与参数相同
-2.必须是相同的statementID(DAO方法是同一个)
-3.sqlSession必须一样（会话级缓存）
-4.RowBounds 分页行范围必须相同
+```markdown
+1. sql与参数相同
+2. 必须是相同的statementID(DAO方法是同一个)
+3. sqlSession必须一样（会话级缓存）
+4. RowBounds 分页行范围必须相同
 ```
 
+```markdown
+# 涉及清空缓存的都搞不了
+1. 未手动清空
+2. 未调用flushCache=true的查询
+3. mapper执行update，commit，rollback方法也会清空缓存
+4. localCacheScope未设置成STATEMENT(将一级缓存的作用域改为嵌套查询子查询等查询，普通查询不走一级缓存)
+```
 
+### 源码解析
 
+![image-20210603100654653](mybatis.assets/image-20210603100654653.png)
 
+BaseExecutor
 
-
-
-代码：
+![image-20210603101039521](mybatis.assets/image-20210603101039521.png)  
 
 第一次查询时
 
@@ -118,13 +126,23 @@ public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBoun
 
 ![image-20210528111809780](mybatis.assets/image-20210528111809780.png)
 
-### 源码解析
+![image-20210603204910064](mybatis.assets/image-20210603204910064.png)
 
-![image-20210603100654653](mybatis.assets/image-20210603100654653.png)
+sqlsessiond不是线程安全的
 
-BaseExecutor
 
-![image-20210603101039521](mybatis.assets/image-20210603101039521.png)  
+
+#### 清空缓存方法
+
+clearLocalCache()
+
+![image-20210603210403208](mybatis.assets/image-20210603210403208.png)
+
+在嵌套子查询中不会清空一级缓存，因为子查询会依赖一级缓存
+
+
+
+
 
 ## 二级缓存
 
