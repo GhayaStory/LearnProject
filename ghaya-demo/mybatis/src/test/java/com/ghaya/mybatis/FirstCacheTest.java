@@ -9,6 +9,10 @@ import org.apache.ibatis.session.*;
 import org.apache.ibatis.transaction.jdbc.JdbcTransaction;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -71,11 +75,11 @@ public class FirstCacheTest {
         BatchExecutor executor = new BatchExecutor(configuration, jdbcTransaction);
         MappedStatement ms = configuration.getMappedStatement("com.ghaya.mybatis.dao.UserDao.setName");
         Map map = new HashMap<>();
-        map.put("arg0",6);
-        map.put("arg1","mybatis4");
+        map.put("arg0", 6);
+        map.put("arg1", "mybatis4");
         executor.doUpdate(ms, map);
-        map.put("arg0",7);
-        map.put("arg1","mybatis5");
+        map.put("arg0", 7);
+        map.put("arg1", "mybatis5");
         executor.doUpdate(ms, map);
         executor.doFlushStatements(false);
 //		connection.commit();//可以设置自动提交
@@ -96,6 +100,7 @@ public class FirstCacheTest {
 
     /**
      * 二级缓存
+     *
      * @throws SQLException
      */
     @Test
@@ -113,9 +118,9 @@ public class FirstCacheTest {
      * 基础sqlsession测试
      */
     @Test
-    public void sessionTest(){
+    public void sessionTest() {
 //		SqlSession sqlSession = factory.openSession(true);//普通sqlsession
-        SqlSession sqlSession = factory.openSession(ExecutorType.REUSE,true);//指定可重用的执行器
+        SqlSession sqlSession = factory.openSession(ExecutorType.REUSE, true);//指定可重用的执行器
         List<Object> list = sqlSession.selectList("com.ghaya.mybatis.dao.UserDao.queryUserById", 1);
         System.out.println(list.get(0));
     }
@@ -128,18 +133,18 @@ public class FirstCacheTest {
      * 4.RowBounds 分页行范围必须相同
      */
     @Test
-    public void firstCacheTest(){
+    public void firstCacheTest() {
         UserDao mapper = sqlSession.getMapper(UserDao.class);
         User user1 = mapper.selectByid(1);
         User user2 = mapper.selectByid2(1);
-        System.out.println(user1==user2);
+        System.out.println(user1 == user2);
 //		RowBounds rowBounds = new RowBounds(5, 10);//自定义分页值不走缓存
         RowBounds aDefault = RowBounds.DEFAULT;//默认分页可以走缓存
         List<Object> list = sqlSession.selectList("com.ghaya.mybatis.dao.UserDao.queryUserById", "1", aDefault);
-        System.out.println(user1==list.get(0));
+        System.out.println(user1 == list.get(0));
         //会话级测试
         User user3 = factory.openSession().getMapper(UserDao.class).queryUserById("1");//新建一个会话则不走缓存
-        System.out.println(user1==user3);
+        System.out.println(user1 == user3);
     }
 
     /**
@@ -150,22 +155,22 @@ public class FirstCacheTest {
      * 4.localCacheScope未设置成STATEMENT(将一级缓存的作用域改为嵌套查询子查询等查询，普通查询不走一级缓存)
      */
     @Test
-    public void firstCacheTest2(){
+    public void firstCacheTest2() {
         UserDao mapper = sqlSession.getMapper(UserDao.class);
         User user = mapper.selectByid(1);
 //		sqlSession.clearCache();//手动清除缓存
         User user2 = mapper.selectByid(1);
         //配置设置为重用执行器，只会编译一次，在一定程度上提高性能
-        System.out.println(user==user2);
+        System.out.println(user == user2);
 
         //注解设置刷新缓存
         User user3 = mapper.selectByid3(1);
-        System.out.println(user==user3);
+        System.out.println(user == user3);
     }
 
 
     @Test
-    public void firstCacheTest3(){
+    public void firstCacheTest3() {
         UserDao mapper = sqlSession.getMapper(UserDao.class);
         User user = new User();
         user.setName("1");
@@ -177,5 +182,30 @@ public class FirstCacheTest {
         user.setEmail("222");
         mapper.insertUser(user);
 
+    }
+
+    /**
+     * 一级缓存失效测试
+     * 该例子还可以深究一下
+     */
+    @Test
+    public void firstCacheMissTest() {
+        //spring构造mybatis会                                                    一级缓存失效  每次查询都会发起一个新的会话
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        //动                                     动                   Mybatis
+        //mapper -> SqlSessionTemplate --> SqlSessionInterceptor --> SqlSessionfactory
+        UserDao bean = context.getBean(UserDao.class);
+        //手动开启事务
+         DataSourceTransactionManager txManager = (DataSourceTransactionManager) context.getBean("txManager");
+         TransactionStatus status = txManager.getTransaction(new DefaultTransactionDefinition());
+
+        User user = bean.selectByid(1);
+        User user1 = bean.selectByid(1);
+
+
+//        UserDao mapper = sqlSession.getMapper(UserDao.class);
+//        User user1 = mapper.selectByid(1);
+
+        System.out.println(user == user1);
     }
 }
