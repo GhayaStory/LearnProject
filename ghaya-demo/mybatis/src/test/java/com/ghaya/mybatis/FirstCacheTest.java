@@ -41,89 +41,6 @@ public class FirstCacheTest {
 
     }
 
-    //简单执行器
-    @Test
-    public void simpleTest() throws SQLException {
-        SimpleExecutor executor = new SimpleExecutor(configuration, jdbcTransaction);
-        MappedStatement ms = configuration.getMappedStatement("com.ghaya.mybatis.dao.UserDao.queryUserById");
-        BoundSql boundSql = ms.getBoundSql(10);
-        //1.sql声明映射2.参数3.行范围（分页）4.结果处理器5.动态SQL语句
-        List<Object> list = executor.doQuery(ms, 1, RowBounds.DEFAULT, SimpleExecutor.NO_RESULT_HANDLER, ms.getBoundSql(1));
-        List<Object> list2 = executor.doQuery(ms, 1, RowBounds.DEFAULT, SimpleExecutor.NO_RESULT_HANDLER, ms.getBoundSql(1));
-        System.out.println(list);
-    }
-
-    //可重用执行器
-    @Test
-    public void ReuseTest() throws SQLException {
-        ReuseExecutor executor = new ReuseExecutor(configuration, jdbcTransaction);//--------------区别在这
-        MappedStatement ms = configuration.getMappedStatement("com.ghaya.mybatis.dao.UserDao.queryUserById");
-        BoundSql boundSql = ms.getBoundSql(10);
-        System.out.println(boundSql);
-        //1.sql声明映射2.参数3.行范围（分页）4.结果处理器5.动态SQL语句
-        List<Object> list = executor.doQuery(ms, 6, RowBounds.DEFAULT, SimpleExecutor.NO_RESULT_HANDLER, ms.getBoundSql(10));
-        List<Object> list2 = executor.doQuery(ms, 7, RowBounds.DEFAULT, SimpleExecutor.NO_RESULT_HANDLER, ms.getBoundSql(10));
-        System.out.println(list);
-        System.out.println(list2);
-    }
-
-    //批处理执行器
-    //只针对修改操作
-    //批处理操作必须手动刷新
-    @Test
-    public void BatchTest() throws SQLException {
-        BatchExecutor executor = new BatchExecutor(configuration, jdbcTransaction);
-        MappedStatement ms = configuration.getMappedStatement("com.ghaya.mybatis.dao.UserDao.setName");
-        Map map = new HashMap<>();
-        map.put("arg0", 6);
-        map.put("arg1", "mybatis4");
-        executor.doUpdate(ms, map);
-        map.put("arg0", 7);
-        map.put("arg1", "mybatis5");
-        executor.doUpdate(ms, map);
-        executor.doFlushStatements(false);
-//		connection.commit();//可以设置自动提交
-    }
-
-    //baseExecutor
-
-    @Test
-    public void BaseExecutorTest() throws SQLException {
-        BaseExecutor executor = new ReuseExecutor(configuration, jdbcTransaction);
-        MappedStatement ms = configuration.getMappedStatement("com.ghaya.mybatis.dao.UserDao.queryUserById");
-        List<Object> query = executor.query(ms, 1, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER);
-        System.out.println(query);
-        List<Object> query1 = executor.query(ms, 1, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER);
-        System.out.println(query1);
-    }
-
-
-    /**
-     * 二级缓存
-     *
-     * @throws SQLException
-     */
-    @Test
-    public void cacheExecutorTest() throws SQLException {
-        SimpleExecutor executor = new SimpleExecutor(configuration, jdbcTransaction);
-        MappedStatement ms = configuration.getMappedStatement("com.ghaya.mybatis.dao.UserDao.queryUserById");
-        //装饰着模式
-        CachingExecutor cachingExecutor = new CachingExecutor(executor);//二级缓存
-        cachingExecutor.query(ms, 1, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER);
-        cachingExecutor.commit(true);//先走二级缓存
-        cachingExecutor.query(ms, 1, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER);
-    }
-
-    /**
-     * 基础sqlsession测试
-     */
-    @Test
-    public void sessionTest() {
-//		SqlSession sqlSession = factory.openSession(true);//普通sqlsession
-        SqlSession sqlSession = factory.openSession(ExecutorType.REUSE, true);//指定可重用的执行器
-        List<Object> list = sqlSession.selectList("com.ghaya.mybatis.dao.UserDao.queryUserById", 1);
-        System.out.println(list.get(0));
-    }
 
     /**
      * 一级缓存命中测试
@@ -169,6 +86,9 @@ public class FirstCacheTest {
     }
 
 
+    /**
+     * 加数据用的
+     */
     @Test
     public void firstCacheTest3() {
         UserDao mapper = sqlSession.getMapper(UserDao.class);

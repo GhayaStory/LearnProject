@@ -1,9 +1,9 @@
-package com.ghaya.mybatis.mapper;
+package com.ghaya.mybatis.test;
 
 //import org.junit.Test;
 
 
-public class MyTest {
+public class MybatisUtilsTest {
 //    @Test
 //    public void selectUser() {
 //        SqlSession session = MybatisUtils.getSession();
