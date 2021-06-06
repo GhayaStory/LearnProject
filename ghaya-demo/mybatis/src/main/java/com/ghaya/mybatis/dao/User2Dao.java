@@ -4,8 +4,6 @@ package com.ghaya.mybatis.dao;
 import com.ghaya.mybatis.pojo.User;
 import com.ghaya.mybatis.pojo.query.PageObj;
 import org.apache.ibatis.annotations.*;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -13,7 +11,7 @@ import java.util.List;
 //@Repository // 将userdao交给spring容器管理
 @CacheNamespace(blocking = true)
 @CacheNamespaceRef(User2Dao.class)
-public interface UserDao {
+public interface User2Dao {
 	//查所有
 	List<User> listUser();
 

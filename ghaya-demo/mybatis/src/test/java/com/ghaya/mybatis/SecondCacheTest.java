@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 二级缓存
+ */
 public class SecondCacheTest {
 
     private Configuration configuration;
@@ -48,6 +51,29 @@ public class SecondCacheTest {
         User user = new User();
         cache.putObject("ghaya",user);//设置花奴才能
         cache.getObject("ghaya");
+    }
+
+
+    /**
+     * 命中条件
+     * 1.会话手动提交之后()
+     * 2.Sql语句，参数相同
+     * 3.相同的statementID
+     * 4.RowBounds相同
+     * @throws SQLException
+     */
+    @Test
+    public void cacheTest2() throws SQLException {
+        SqlSession sqlSession = factory.openSession(true);//自动提交
+        UserDao mapper = sqlSession.getMapper(UserDao.class);
+        User user = mapper.selectByid4(1);
+        sqlSession.commit();
+
+
+        SqlSession sqlSession2 = factory.openSession(true);//自动提交
+        UserDao mapper2 = sqlSession2.getMapper(UserDao.class);
+        User user2 = mapper2.selectByid4(1);
+        System.out.println(user==user2);
     }
 
 }

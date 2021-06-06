@@ -18,7 +18,11 @@
 
 ### 可重用执行器
 
-只编译一次
+```markdown
+相同sql只会编译一次，参数不一样也会重用
+```
+
+
 
 
 
@@ -42,13 +46,11 @@
 
 ### 命中条件
 
-
+#### 操作配置相关
 
 ![image-20210602185223647](mybatis.assets/image-20210602185223647.png)
 
-#### 1.运行时参数\
-
-#### 2.操作配置相关
+#### 
 
 ```markdown
 1. sql与参数相同
@@ -185,4 +187,33 @@ spring配置文件整合mybatis  每次查询都会发起一个新的会话
 ![image-20210605213331131](mybatis.assets/image-20210605213331131.png)
 
 
+
+### 命中条件
+
+```markdown
+1.会话手动提交后
+2.Sql语句，参数相同
+3.相同的statementID
+4.RowBounds相同		
+```
+
+### 配置
+
+![image-20210606205245093](mybatis.assets/image-20210606205245093.png)
+
+```markdown
+使用二级缓存必须声明缓存空间
+1.在mapper接口上+@CacheNamespace
+2.或者xml + <cache/>标签
+3.两者都写的话，会产生两个缓存对象，解决办法使用
+  <cache-ref namespace="com.ghaya.mybatis.dao.UserDao"/>
+4.@CacheNamespaceRef(UserDao.class) 设置引用缓存空间
+ 比如ADao  BDao CDao 引用同一个空间，在清空缓存时会一起清空
+```
+
+### 为何提交后才能命中缓存
+
+怕脏读
+
+![image-20210606212425423](mybatis.assets/image-20210606212425423.png)
 

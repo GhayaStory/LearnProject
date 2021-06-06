@@ -4,8 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <settings>
+        <!--结果转驼峰-->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-        <!--默认重用执行器-->
+        <!--默认重用执行器,相同sql只会编译一次，参数不一样也会重用-->
         <setting name="defaultExecutorType" value="REUSE"/>
         <!--关闭一级缓存-->
         <!--<setting name="localCacheScope" value="STATEMENT"/>-->
