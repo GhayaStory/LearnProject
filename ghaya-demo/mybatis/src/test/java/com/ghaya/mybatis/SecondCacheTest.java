@@ -1,29 +1,23 @@
 package com.ghaya.mybatis;
 
+import com.ghaya.mybatis.dao.StudentDao;
 import com.ghaya.mybatis.dao.UserDao;
+import com.ghaya.mybatis.pojo.Student;
 import com.ghaya.mybatis.pojo.User;
 import org.apache.ibatis.cache.Cache;
-import org.apache.ibatis.executor.*;
-import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.*;
 import org.apache.ibatis.transaction.jdbc.JdbcTransaction;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.mybatis.spring.annotation.MapperScan;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 二级缓存
  */
+@MapperScan("com.ghaya.mybatis.dao")
 public class SecondCacheTest {
 
     private Configuration configuration;
@@ -74,6 +68,23 @@ public class SecondCacheTest {
         UserDao mapper2 = sqlSession2.getMapper(UserDao.class);
         User user2 = mapper2.selectByid4(1);
         System.out.println(user==user2);
+    }
+
+
+    /**
+     * 命中条件
+     *
+     */
+    @Test
+    public void cacheTest3() throws SQLException {
+        SqlSession sqlSession = factory.openSession(true);//自动提交
+        UserDao mapper1= sqlSession.getMapper(UserDao.class);
+        StudentDao mapper2 = sqlSession.getMapper(StudentDao.class);
+        User user = mapper1.selectByid4(1);
+        Student student = mapper2.selectByid4(2);
+        System.out.println(user);
+        System.out.println(student);
+        sqlSession.commit();
     }
 
 }

@@ -31,6 +31,7 @@
     <mappers>
         <!--<mapper resource="com/ghaya/mapper/userMapper_java.xml"/>--><!--资源文件放在java包下需要maven当中处理资源自动导出问题，不然不会自动把xml加进去-->
         <mapper resource="mapper/userMapper.xml"/>
+        <mapper class="com.ghaya.mybatis.dao.StudentDao"/>
     </mappers>
 </configuration>
 

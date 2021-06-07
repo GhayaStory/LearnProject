@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper //告诉springboot这事一个mybatis的mapper类
 //@Repository // 将userdao交给spring容器管理
 @CacheNamespace(blocking = true)
-@CacheNamespaceRef(User2Dao.class)
+//@CacheNamespaceRef(UserDao.class)
 public interface UserDao {
 	//查所有
 	List<User> listUser();
@@ -45,7 +45,7 @@ public interface UserDao {
 
 
 	@Select("select * from user where id = #{id}")
-	@Options(useCache = false)//设置二级缓存是否命中
+//	@Options(useCache = false)//设置二级缓存是否命中
 	User selectByid4(Integer id);
 
 

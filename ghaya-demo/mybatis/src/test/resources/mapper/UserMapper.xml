@@ -14,7 +14,7 @@
 <mapper namespace="com.ghaya.mybatis.dao.UserDao">
     <!--缓存空间声明-->
     <!--<cache/>-->
-    <cache-ref namespace="com.ghaya.mybatis.dao.UserDao"/>
+    <!--<cache-ref namespace="com.ghaya.mybatis.dao.UserDao"/>-->
 
 
     <!--<resultMap id="BaseResultMap" type="com.bangdao.zparking.middleplat.master.dal.pojo.AlterApplicationDO">-->

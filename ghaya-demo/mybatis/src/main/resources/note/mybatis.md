@@ -194,12 +194,10 @@ spring配置文件整合mybatis  每次查询都会发起一个新的会话
 1.会话手动提交后
 2.Sql语句，参数相同
 3.相同的statementID
-4.RowBounds相同		
+4.RowBounds相同
 ```
 
 ### 配置
-
-![image-20210606205245093](mybatis.assets/image-20210606205245093.png)
 
 ```markdown
 使用二级缓存必须声明缓存空间
@@ -211,9 +209,16 @@ spring配置文件整合mybatis  每次查询都会发起一个新的会话
  比如ADao  BDao CDao 引用同一个空间，在清空缓存时会一起清空
 ```
 
+![image-20210606205245093](mybatis.assets/image-20210606205245093.png)
+
 ### 为何提交后才能命中缓存
 
-怕脏读
+跨线程，怕脏读
 
 ![image-20210606212425423](mybatis.assets/image-20210606212425423.png)
 
+二级缓存结构
+
+![image-20210607213959600](mybatis.assets/image-20210607213959600.png)
+
+![image-20210607222208154](mybatis.assets/image-20210607222208154.png)
