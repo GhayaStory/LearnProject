@@ -43,7 +43,8 @@ public class SecondCacheTest {
     public void cacheTest1() throws SQLException {
         Cache cache = configuration.getCache("com.ghaya.mybatis.dao.UserDao");
         User user = new User();
-        cache.putObject("ghaya",user);//设置花奴才能
+        user.setId(1);
+        cache.putObject("ghaya",user);//设置
         cache.getObject("ghaya");
     }
 
