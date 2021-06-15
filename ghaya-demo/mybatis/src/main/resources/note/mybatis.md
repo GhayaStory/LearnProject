@@ -4,9 +4,11 @@
 
 
 
+## 会话
 
 
-## 三种执行器
+
+## 执行器
 
 ### 相关结构
 
@@ -14,9 +16,11 @@
 
 ### 简单执行器
 
-
+BaseExecutor
 
 ### 可重用执行器
+
+ReuseExecutor
 
 ```markdown
 相同sql只会编译一次，参数不一样也会重用
@@ -24,33 +28,24 @@
 
 
 
-
-
 ### 批处理执行器
 
+BatchExecutor
 
 
 
 
+## 缓存
+### 一级缓存（会话级缓存）
 
+#### 特性
 
-## 一级缓存（会话级缓存）
+​	PerpetualCache
 
-默认打开，k-v形式，
+​	与会话相关，sql，参数条件相关，提交修改都会清空
 
-与会话相关
+#### 命中条件
 
-参数条件相关
-
-提交修改都会清空
-
-### 命中条件
-
-#### 操作配置相关
-
-![image-20210602185223647](mybatis.assets/image-20210602185223647.png)
-
-#### 
 
 ```markdown
 1. sql与参数相同
@@ -67,7 +62,7 @@
 4. localCacheScope未设置成STATEMENT(将一级缓存的作用域改为嵌套查询子查询等查询，普通查询不走一级缓存)
 ```
 
-### 源码解析
+#### 源码解析
 
 ![image-20210603100654653](mybatis.assets/image-20210603100654653.png)
 
@@ -77,7 +72,7 @@ BaseExecutor
 
 第一次查询时
 
-会将sql和传参生成一个缓存 CacheKey  并且设置在缓存中
+会将sql和传参生成一个缓存 CacheKey  并且设置在一级缓存中
 
 ```java
 @Override
@@ -140,7 +135,7 @@ sqlsessiond不是线程安全的
 
 
 
-#### 清空缓存方法
+##### 清空缓存方法
 
 clearLocalCache()
 
@@ -150,7 +145,7 @@ clearLocalCache()
 
 
 
-### 失效问题
+#### 失效问题
 
 spring配置文件整合mybatis  每次查询都会发起一个新的会话
 
@@ -180,24 +175,70 @@ spring配置文件整合mybatis  每次查询都会发起一个新的会话
 
 
 
-## 二级缓存（应用级缓存）
+### 二级缓存（应用级缓存）
+
+#### 特性
+
+TransactionalCache
+
+存储集合
+
+过期清理
+
+![image-20210614215527705](mybatis.assets/image-20210614215527705.png)
+
+
 
 需要手动提交后才命中二级缓存，作用范围、生命周期与一级不同，可以跨线程
 
 ![image-20210605213331131](mybatis.assets/image-20210605213331131.png)
 
+![image-20210614214617644](mybatis.assets/image-20210614214617644.png)
 
 
-### 命中条件
+
+二级缓存结构
+
+![image-20210607213959600](mybatis.assets/image-20210607213959600.png)
+
+暂存区：
+
+只暂存修改数据
+
+![image-20210607222208154](mybatis.assets/image-20210607222208154.png)
+
+#### 命中条件
 
 ```markdown
+## 前提
+要开启二级缓存
+要声明缓存空间
+## 触发条件
 1.会话手动提交后
 2.Sql语句，参数相同
 3.相同的statementID
 4.RowBounds相同
 ```
 
-### 配置
+##### 为何提交后才能命中缓存
+
+跨线程，怕脏读
+
+![image-20210606212425423](mybatis.assets/image-20210606212425423.png)
+
+##### 二级缓存配置
+
+###### 开启二级缓存
+
+```markdown
+1.二级缓存默认是开启的
+<!-- 开启二级缓存  默认值为true -->
+<setting name="cacheEnabled" value="true"/>
+```
+
+
+
+###### 声明缓存空间
 
 ```markdown
 使用二级缓存必须声明缓存空间
@@ -211,14 +252,77 @@ spring配置文件整合mybatis  每次查询都会发起一个新的会话
 
 ![image-20210606205245093](mybatis.assets/image-20210606205245093.png)
 
-### 为何提交后才能命中缓存
+#### 源码解析
 
-跨线程，怕脏读
 
-![image-20210606212425423](mybatis.assets/image-20210606212425423.png)
 
-二级缓存结构
+##### 执行流程
 
-![image-20210607213959600](mybatis.assets/image-20210607213959600.png)
+![image-20210612163247095](mybatis.assets/image-20210612163247095.png)
 
-![image-20210607222208154](mybatis.assets/image-20210607222208154.png)
+
+
+
+
+org.apache.ibatis.executor.CachingExecutor
+
+```java
+
+@Override
+public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql)
+      throws SQLException {
+    Cache cache = ms.getCache();//缓存
+    if (cache != null) {
+      flushCacheIfRequired(ms);//清空暂存区（实际上只修改了清理标志，防止脏读，让其他会话访问时返回null）
+      if (ms.isUseCache() && resultHandler == null) {
+        ensureNoOutParams(ms, boundSql);
+        @SuppressWarnings("unchecked")
+        List<E> list = (List<E>) tcm.getObject(cache, key);//把缓存空间作为key，获取二级缓存
+        if (list == null) {
+          list = delegate.query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);//查询数据库
+          tcm.putObject(cache, key, list); // issue #578 and #116
+        }
+        return list;
+      }
+    }
+    return delegate.query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
+  }
+```
+
+
+
+
+
+```java
+  public void commit() {
+    if (clearOnCommit) {
+      delegate.clear();
+    }
+    flushPendingEntries();
+    reset();
+  }
+
+private void flushPendingEntries() {
+    for (Map.Entry<Object, Object> entry : entriesToAddOnCommit.entrySet()) {//便利暂存区，put进二级缓存空间
+      delegate.putObject(entry.getKey(), entry.getValue());
+    }
+    for (Object entry : entriesMissedInCache) {
+      if (!entriesToAddOnCommit.containsKey(entry)) {
+        delegate.putObject(entry, null);
+      }
+    }
+  }
+```
+
+
+
+## StatementHandler结构
+
+
+
+![image-20210613193043237](mybatis.assets/image-20210613193043237.png)
+
+
+
+
+
