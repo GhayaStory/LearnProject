@@ -4,11 +4,15 @@
 
 
 
-## 会话
+## 会话 SqlSession
 
 
 
-## 执行器
+
+
+## 执行器 Executor
+
+处理一些共性
 
 ### 相关结构
 
@@ -35,7 +39,7 @@ BatchExecutor
 
 
 
-## 缓存
+## 缓存 Cache
 ### 一级缓存（会话级缓存）
 
 #### 特性
@@ -316,13 +320,81 @@ private void flushPendingEntries() {
 
 
 
-## StatementHandler结构
+## JDBC处理器 StatementHandler
+
+### 描述
+
+JDBC处理
+
+每次执行SQL的时候会创建statment实例，走缓存是不走statement的
 
 
 
 ![image-20210613193043237](mybatis.assets/image-20210613193043237.png)
 
+![image-20210711182832541](mybatis.assets/image-20210711182832541.png)
 
+### 源码
+
+```java
+public interface StatementHandler {
+
+//创建statement
+  Statement prepare(Connection connection, Integer transactionTimeout)
+      throws SQLException;
+//预处理参数
+  void parameterize(Statement statement)
+      throws SQLException;
+//执行批处理
+  void batch(Statement statement)
+      throws SQLException;
+//执行修改（新增）
+  int update(Statement statement)
+      throws SQLException;
+//查询
+  <E> List<E> query(Statement statement, ResultHandler resultHandler)
+      throws SQLException;
+//查询游标
+  <E> Cursor<E> queryCursor(Statement statement)
+      throws SQLException;
+//获取动态sql
+  BoundSql getBoundSql();
+//获取参数处理器
+  ParameterHandler getParameterHandler();
+
+}
+```
+
+![image-20210711183115800](mybatis.assets/image-20210711183115800.png)
+
+#### 预处理
+
+SimpleExecutor.java
+
+```java
+@Override
+public <E> List<E> doQuery(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) throws SQLException {
+    Statement stmt = null;
+    try {
+      Configuration configuration = ms.getConfiguration();
+      StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, rowBounds, resultHandler, boundSql);
+      stmt = prepareStatement(handler, ms.getStatementLog());
+      //3.执行语句  ResultSetHandler.java 结果集处理
+      return handler.query(stmt, resultHandler);
+    } finally {
+      closeStatement(stmt);
+    }
+}
+private Statement prepareStatement(StatementHandler handler, Log statementLog) throws SQLException {
+    Statement stmt;
+    Connection connection = getConnection(statementLog);
+    //1.创建statement
+    stmt = handler.prepare(connection, transaction.getTimeout());
+	//2.设置参数  ParameterHandler.java 参数处理器
+    handler.parameterize(stmt);
+    return stmt;
+  }
+```
 
 
 
