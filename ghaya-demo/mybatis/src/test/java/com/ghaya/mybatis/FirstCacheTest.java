@@ -2,9 +2,6 @@ package com.ghaya.mybatis;
 
 import com.ghaya.mybatis.dao.UserDao;
 import com.ghaya.mybatis.pojo.User;
-import org.apache.ibatis.executor.*;
-import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.*;
 import org.apache.ibatis.transaction.jdbc.JdbcTransaction;
 import org.junit.Before;
@@ -16,9 +13,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class FirstCacheTest {
 

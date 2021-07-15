@@ -1,8 +1,5 @@
 package com.ghaya.mybatis;
 
-import com.ghaya.mybatis.dao.UserDao;
-import com.ghaya.mybatis.pojo.User;
-import org.apache.ibatis.cache.CacheException;
 import org.apache.ibatis.executor.*;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;

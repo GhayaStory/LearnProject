@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper //告诉springboot这事一个mybatis的mapper类
 //@Repository // 将userdao交给spring容器管理
@@ -49,7 +50,21 @@ public interface UserDao {
 	User selectByid4(Integer id);
 
 
+	@Select("select * from user where id = #{id}")
+	User selectByEveryThing1(Integer id);
 
+	@Select("select * from user where id = #{pId}")
+	User selectByEveryThing2(@Param("pId") Integer id);
+
+
+	@Select("select * from user where name = #{param1} and email = #{param2}")
+	User selectByEveryThing3(String name,String email,Map map);
+
+	@Select("select * from user where name = #{name} and email = #{email}")
+	User selectByEveryThing4(@Param("name")String name,@Param("email")String email,@Param("map")Map map);
+
+	@Select("select * from user where name = #{name} and email = #{arg1}")
+	User selectByEveryThing5(@Param("name")String name,String email,Map map);
 
 
 
