@@ -1,6 +1,7 @@
 package ghaya.learn.lambda.BV1sE411P7C1.demo;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,6 +14,7 @@ import java.util.stream.Stream;
 
 /**
  * Stream Api
+ * https://www.runoob.com/java/java8-streams.html
  */
 public class StreamDemo1 {
 
@@ -25,13 +27,16 @@ public class StreamDemo1 {
          */
         List<String> players = Arrays.asList("Oqpw", "La", "Ghaya", "Lbc", "lhg","lqT","Amd","TLd");
 
+
+
+        //旧的过滤List
         /*for (String player: players){
             if(player.startsWith("L")){
                 String temp = player.toUpperCase();
             }
         }*/
 
-        //List转换流
+        //List转换流 过滤
         List<String> l = players.stream()//转换成流
                 .filter(s -> s.startsWith("l")||s.startsWith("L"))//找出l 开头
                 .map(String::toUpperCase)//对每个数据进行处理，转化大写
@@ -53,8 +58,10 @@ public class StreamDemo1 {
 
         //文件
         try {
+            System.out.println(new File("").getAbsolutePath());
             Path path = Paths.get("file.txt");
             Stream<String> lines = Files.lines(path);
+            lines.forEach(i -> System.out.println(i));
         } catch (IOException e) {
             e.printStackTrace();
         }
