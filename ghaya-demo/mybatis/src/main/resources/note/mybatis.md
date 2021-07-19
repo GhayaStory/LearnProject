@@ -4,11 +4,15 @@
 
 
 
-## 会话
+## 会话 SqlSession
 
 
 
-## 执行器
+
+
+## 执行器 Executor
+
+处理一些共性
 
 ### 相关结构
 
@@ -35,7 +39,7 @@ BatchExecutor
 
 
 
-## 缓存
+## 缓存 Cache
 ### 一级缓存（会话级缓存）
 
 #### 特性
@@ -316,13 +320,247 @@ private void flushPendingEntries() {
 
 
 
-## StatementHandler结构
+## JDBC处理器 StatementHandler
+
+### 描述
+
+JDBC处理
+
+每次执行SQL的时候会创建statment实例，走缓存是不走statement的
 
 
 
 ![image-20210613193043237](mybatis.assets/image-20210613193043237.png)
 
+![image-20210711182832541](mybatis.assets/image-20210711182832541.png)
+
+### 源码
+
+```java
+public interface StatementHandler {
+
+//创建statement
+  Statement prepare(Connection connection, Integer transactionTimeout)
+      throws SQLException;
+//预处理参数
+  void parameterize(Statement statement)
+      throws SQLException;
+//执行批处理
+  void batch(Statement statement)
+      throws SQLException;
+//执行修改（新增）
+  int update(Statement statement)
+      throws SQLException;
+//查询
+  <E> List<E> query(Statement statement, ResultHandler resultHandler)
+      throws SQLException;
+//查询游标
+  <E> Cursor<E> queryCursor(Statement statement)
+      throws SQLException;
+//获取动态sql
+  BoundSql getBoundSql();
+//获取参数处理器
+  ParameterHandler getParameterHandler();
+
+}
+```
+
+![image-20210711183115800](mybatis.assets/image-20210711183115800.png)
+
+#### 预处理
+
+SimpleExecutor.java
+
+```java
+@Override
+public <E> List<E> doQuery(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) throws SQLException {
+    Statement stmt = null;
+    try {
+      Configuration configuration = ms.getConfiguration();
+      StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, rowBounds, resultHandler, boundSql);
+      stmt = prepareStatement(handler, ms.getStatementLog());
+      //3.执行语句  ResultSetHandler.java 结果集处理
+      return handler.query(stmt, resultHandler);
+    } finally {
+      closeStatement(stmt);
+    }
+}
+private Statement prepareStatement(StatementHandler handler, Log statementLog) throws SQLException {
+    Statement stmt;
+    Connection connection = getConnection(statementLog);
+    //1.创建statement
+    stmt = handler.prepare(connection, transaction.getTimeout());
+	//2.设置参数  ParameterHandler.java 参数处理器
+    handler.parameterize(stmt);
+    return stmt;
+  }
+```
+
+![image-20210716001652431](mybatis.assets/image-20210716001652431.png)
+
+### ParamNameResolver 参数转换过程（实用）
+
+把Java Bean转换为JDBC参数
+
+ParamNameResolver.java   
+
+```java
+public Object getNamedParams(Object[] args) {
+  final int paramCount = names.size();
+  if (args == null || paramCount == 0) {
+    return null;
+  } else if (!hasParamAnnotation && paramCount == 1) {
+    return args[names.firstKey()];
+  } else {
+    final Map<String, Object> param = new ParamMap<>();
+    int i = 0;
+    for (Map.Entry<Integer, String> entry : names.entrySet()) {
+      param.put(entry.getValue(), args[entry.getKey()]);
+      // add generic param names (param1, param2, ...)
+      final String genericParamName = GENERIC_NAME_PREFIX + (i + 1);
+      // ensure not to overwrite parameter named with @Param
+      if (!names.containsValue(genericParamName)) {
+        param.put(genericParamName, args[entry.getKey()]);
+      }
+      i++;
+    }
+    return param;
+  }
+}
+```
+
+#### 单个参数：
+
+1.默认不转换处理
+
+```java
+@Select("select * from user where id = #{id}")
+User selectByEveryThing1(Integer id);
+```
+2.除非设置@Param
+
+```java
+@Select("select * from user where id = #{pId}")
+User selectByEveryThing2(@Param("pId") Integer id);
+```
+
+假如设为#{id}则，Cause: org.apache.ibatis.binding.BindingException: Parameter 'id' not found. Available parameters are [pId, param1]
+
+#### 多个参数：
+
+1.默认
+
+arg0... 和 param1...
+
+```java
+    @Test
+    public void test1() throws SQLException {
+        UserDao mapper = sqlSession.getMapper(UserDao.class);
+        User user3 = mapper.selectByEveryThing3("1","2",null);
+        System.out.println(user3);
+    }
+```
+
+```java
+@Select("select * from user where name = #{arg0} and email = #{arg1}")
+User selectByEveryThing3(String name,String email);
+```
+
+{arg2=null, arg1=2, arg0=1, param3=null, param1=1, param2=2}
+
+---
+
+2.@Param指定，
+
+指定后arg则不存在，但param依然在
+
+```java
+@Select("select * from user where name = #{name} and email = #{email}")
+User selectByEveryThing4(@Param("name")String name,@Param("email")String email,@Param("map")Map map);
+```
+
+{name=1, param3=null, map=null, param1=1, email=2, param2=2}
+
+特殊情况
+
+```java
+@Select("select * from user where name = #{name} and email = #{arg1}")
+User selectByEveryThing4(@Param("name")String name,String email,Map map);
+```
+
+{arg2=null, arg1=2, name=1, param3=null, param1=1, param2=2}
+
+3.基于反射 arg
+
+部分版本不支持，关于反射获取变量名，只有jdk1.8以上  并且添加了 -parameters参数
+
+### ParameterHandler 参数映射 填充
+
+DefaultParameterHandler.java
+
+```java
+@Override
+public void setParameters(PreparedStatement ps) {
+  ErrorContext.instance().activity("setting parameters").object(mappedStatement.getParameterMap().getId());
+    //boundSql 包含替换好？的SQL语句，以及语句需要的参数列表
+  List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+  if (parameterMappings != null) {
+      //循环参数列表
+    for (int i = 0; i < parameterMappings.size(); i++) {
+      ParameterMapping parameterMapping = parameterMappings.get(i);
+      if (parameterMapping.getMode() != ParameterMode.OUT) {
+        Object value;
+        String propertyName = parameterMapping.getProperty();
+        if (boundSql.hasAdditionalParameter(propertyName)) { // issue #448 ask first for additional params
+          //<foreach>
+          value = boundSql.getAdditionalParameter(propertyName);
+        } else if (parameterObject == null) {
+          value = null;
+        } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+          value = parameterObject;
+        } else {
+            //parameterObject 包含参数名arg、param、@param自定义参数名的实际值集合
+          MetaObject metaObject = configuration.newMetaObject(parameterObject);
+            //支持多种属性结构获取  user.pro[1].age
+          value = metaObject.getValue(propertyName);
+        }
+        TypeHandler typeHandler = parameterMapping.getTypeHandler();
+        JdbcType jdbcType = parameterMapping.getJdbcType();
+        if (value == null && jdbcType == null) {
+          jdbcType = configuration.getJdbcTypeForNull();
+        }
+        try {
+            //设值
+          typeHandler.setParameter(ps, i + 1, value, jdbcType);
+        } catch (TypeException | SQLException e) {
+          throw new TypeException("Could not set parameters for mapping: " + parameterMapping + ". Cause: " + e, e);
+        }
+      }
+    }
+  }
+}
+```
+
+boundSql
+
+![image-20210715235913224](mybatis.assets/image-20210715235913224.png)
+
+![image-20210716000006668](mybatis.assets/image-20210716000006668.png)
+
+BaseTypeHandler.java
 
 
 
+UnknownTypeHandler.java
+
+```java
+@Override
+public void setNonNullParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType)
+    throws SQLException {
+  TypeHandler handler = resolveTypeHandler(parameter, jdbcType);
+  handler.setParameter(ps, i, parameter, jdbcType);
+}
+```
+
+### ResultSetHandler 结果集处理
 

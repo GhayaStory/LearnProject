@@ -4,7 +4,12 @@ package ghaya.learn.lambda.BV1sE411P7C1.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 
 @Data
@@ -20,4 +25,10 @@ public class User {
     public static Predicate<User> ageDayu70 = x -> x.getAge() > 70;
     public static Predicate<User> genderM = x -> x.getGender().equals("M");
 
+    public static void main(String[] args) {
+
+
+    }
 }
+
+
