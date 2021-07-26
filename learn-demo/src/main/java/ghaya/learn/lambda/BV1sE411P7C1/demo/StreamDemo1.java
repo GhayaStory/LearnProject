@@ -37,7 +37,8 @@ public class StreamDemo1 {
         }*/
 
         //List转换流 过滤
-        List<String> l = players.stream()//转换成流
+        List<String> l = players.stream()
+                //转换成流
                 .filter(s -> s.startsWith("l")||s.startsWith("L"))//找出l 开头
                 .map(String::toUpperCase)//对每个数据进行处理，转化大写
                 .sorted()//自然排序

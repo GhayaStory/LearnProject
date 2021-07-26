@@ -25,10 +25,6 @@ public class User {
     public static Predicate<User> ageDayu70 = x -> x.getAge() > 70;
     public static Predicate<User> genderM = x -> x.getGender().equals("M");
 
-    public static void main(String[] args) {
-
-
-    }
 }
 
 

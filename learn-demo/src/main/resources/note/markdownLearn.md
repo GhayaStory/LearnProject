@@ -70,8 +70,6 @@ typora其实就是一个浏览器，
 
 
 
-
-
 | 名字 | 职业 |
 | -- | -- |
 | Ghaya | 自由人 |
@@ -91,7 +89,38 @@ public static void main(String[] args){
 }
 ```
 
+## 流程图
 
+```
+​```flow
+st=>start: 开始
+op=>operation: My Operation
+cond=>condition: Yes or No?
+e=>end
+st->op->cond
+cond(yes)->e
+cond(no)->op
+&```
+```
+
+```flow
+st=>start: 开始
+op=>operation: My Operation
+cond=>condition: Yes or No?
+e=>end
+st->op->cond
+cond(yes)->e
+cond(no)->op
+&```
+```
+
+## 其他
+
+~~删除线~~
+
+```undefined
+~~这是删除线~~
+```
 
 
 

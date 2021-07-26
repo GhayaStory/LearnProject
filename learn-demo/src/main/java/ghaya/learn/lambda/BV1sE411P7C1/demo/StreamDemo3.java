@@ -2,8 +2,11 @@ package ghaya.learn.lambda.BV1sE411P7C1.demo;
 
 
 import ghaya.learn.lambda.BV1sE411P7C1.entity.Employee;
+import org.junit.Test;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,6 +44,7 @@ public class StreamDemo3 {
     /**
      * 用于数据格式转换
      */
+    @Test
     public void demo1(){
         List<String> alpha = Arrays.asList("Monkey", "Lion", "Giraffe", "Lemur");
 
@@ -52,12 +56,22 @@ public class StreamDemo3 {
 
         System.out.println(alphaUpper); //[MONKEY, LION, GIRAFFE, LEMUR]
 
+
+        AtomicInteger i = new AtomicInteger(1);
+        AtomicReference<String> str = new AtomicReference<>("123");
         // 使用Stream管道流
-        List<String> collect = alpha.stream().map(String::toUpperCase).collect(Collectors.toList());
+        List<HashMap> key = alpha.stream().map(s -> {
+            HashMap<Object, Object> map = new HashMap<>();
+            str.set("222");
+            map.put("key", s.toUpperCase());
+            map.put("count", i.getAndIncrement());
+            return map;
+        }).collect(Collectors.toList());
+//        List<String> collect = key;
         //上面使用了方法引用，和下面的lambda表达式语法效果是一样的
         //List<String> collect = alpha.stream().map(s -> s.toUpperCase()).collect(Collectors.toList());
 
-        System.out.println(collect); //[MONKEY, LION, GIRAFFE, LEMUR]
+        System.out.println(key); //[MONKEY, LION, GIRAFFE, LEMUR]
 
 
 
