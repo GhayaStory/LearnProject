@@ -57,8 +57,8 @@ public interface UserDao {
 	User selectByEveryThing2(@Param("pId") Integer id);
 
 
-	@Select("select * from user where name = #{param1} and email = #{param2}")
-	User selectByEveryThing3(String name,String email,Map map);
+	@Select("select * from user where name = #{param1} and email = #{param2} and age > #{param3}")
+	User selectByEveryThing3(String name,String email,Integer age,Map map);
 
 	@Select("select * from user where name = #{name} and email = #{email}")
 	User selectByEveryThing4(@Param("name")String name,@Param("email")String email,@Param("map")Map map);

@@ -396,40 +396,9 @@ private Statement prepareStatement(StatementHandler handler, Log statementLog) t
   }
 ```
 
-![image-20210716001652431](mybatis.assets/image-20210716001652431.png)
+### 参数处理
 
-### ParamNameResolver 参数转换过程（实用）
-
-把Java Bean转换为JDBC参数
-
-ParamNameResolver.java   
-
-```java
-public Object getNamedParams(Object[] args) {
-  final int paramCount = names.size();
-  if (args == null || paramCount == 0) {
-    return null;
-  } else if (!hasParamAnnotation && paramCount == 1) {
-    return args[names.firstKey()];
-  } else {
-    final Map<String, Object> param = new ParamMap<>();
-    int i = 0;
-    for (Map.Entry<Integer, String> entry : names.entrySet()) {
-      param.put(entry.getValue(), args[entry.getKey()]);
-      // add generic param names (param1, param2, ...)
-      final String genericParamName = GENERIC_NAME_PREFIX + (i + 1);
-      // ensure not to overwrite parameter named with @Param
-      if (!names.containsValue(genericParamName)) {
-        param.put(genericParamName, args[entry.getKey()]);
-      }
-      i++;
-    }
-    return param;
-  }
-}
-```
-
-#### 单个参数：
+#### 单个参数
 
 1.默认不转换处理
 
@@ -437,6 +406,7 @@ public Object getNamedParams(Object[] args) {
 @Select("select * from user where id = #{id}")
 User selectByEveryThing1(Integer id);
 ```
+
 2.除非设置@Param
 
 ```java
@@ -446,7 +416,7 @@ User selectByEveryThing2(@Param("pId") Integer id);
 
 假如设为#{id}则，Cause: org.apache.ibatis.binding.BindingException: Parameter 'id' not found. Available parameters are [pId, param1]
 
-#### 多个参数：
+#### 多个参数
 
 1.默认
 
@@ -493,6 +463,56 @@ User selectByEveryThing4(@Param("name")String name,String email,Map map);
 3.基于反射 arg
 
 部分版本不支持，关于反射获取变量名，只有jdk1.8以上  并且添加了 -parameters参数
+
+
+
+### ParamNameResolver 参数转换过程
+
+把Java Bean转换为JDBC参数，
+
+结果为生成param参数对象，包含默认的，自定义参数名等集合
+
+例：{arg2={this is key=这是值}, arg1=2, arg0=1, param3={this is key=这是值}, param1=1, param2=2}
+
+##### 
+
+ParamNameResolver.java   
+
+```java
+//@Select("select * from user where name = #{param1} and email = #{param2}")
+//User selectByEveryThing3(String name,String email,Map map);
+
+//        HashMap hashMap = new HashMap();
+//        hashMap.put("this is key","这是值");
+//        User user3 = mapper.selectByEveryThing3("1","2",hashMap);
+// 转换成默认或者附带的参数
+public Object getNamedParams(Object[] args) {
+    //args  ["1","2",hahsMap{"this is key":"这是值"}]
+    //names [SortedMap{"0":"arg0","1":"arg1","2":"arg2"}]
+  final int paramCount = names.size();
+  if (args == null || paramCount == 0) {
+    return null;
+  } else if (!hasParamAnnotation && paramCount == 1) {
+    return args[names.firstKey()];
+  } else {
+    final Map<String, Object> param = new ParamMap<>();
+    int i = 0;
+    for (Map.Entry<Integer, String> entry : names.entrySet()) {
+      param.put(entry.getValue(), args[entry.getKey()]);
+      // add generic param names (param1, param2, ...)
+      final String genericParamName = GENERIC_NAME_PREFIX + (i + 1);
+      // ensure not to overwrite parameter named with @Param
+      if (!names.containsValue(genericParamName)) {
+        param.put(genericParamName, args[entry.getKey()]);
+      }
+      i++;
+    }
+    return param;
+  }
+}
+```
+
+
 
 ### ParameterHandler 参数映射 填充
 

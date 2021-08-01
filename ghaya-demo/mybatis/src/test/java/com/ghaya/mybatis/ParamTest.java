@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class ParamTest {
 
@@ -40,7 +41,9 @@ public class ParamTest {
         UserDao mapper = sqlSession.getMapper(UserDao.class);
 //        User user2 = mapper.selectByEveryThing2(3);
 //        System.out.println(user2);
-        User user3 = mapper.selectByEveryThing3("1","2",null);
+        HashMap hashMap = new HashMap();
+        hashMap.put("this is key","这是值");
+        User user3 = mapper.selectByEveryThing3("1","2",1,hashMap);
         System.out.println(user3);
 //        User user4 = mapper.selectByEveryThing4("1","2",null);
 //        System.out.println(user4);

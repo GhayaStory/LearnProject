@@ -18,11 +18,12 @@
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <!--# mysql 8.0以后要用这个-->
-                <!--<property name="driver" value="com.mysql.cj.jdbc.Driver"/>-->
-                <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <!--<property name="url" value="jdbc:mysql://192.168.1.206:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true&amp;serverTimezone=UTC"/>-->
-                <property name="url" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true&amp;serverTimezone=UTC"/>
-                          <!--value="jdbc:mysql://localhost:3306/test?useSSL=true&amp;useUnicode=true&amp;characterEncoding=utf8"/>-->
+                <!--家里的台式的地址-->
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://192.168.1.206:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true&amp;serverTimezone=UTC"/>
+                <!--公司笔记本的地址-->
+                <!--<property name="driver" value="com.mysql.jdbc.Driver"/>-->
+                <!--<property name="url" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true&amp;serverTimezone=UTC"/>-->
                 <property name="username" value="root"/>
                 <property name="password" value="123456"/>
             </dataSource>
