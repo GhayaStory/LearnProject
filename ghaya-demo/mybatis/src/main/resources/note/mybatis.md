@@ -398,6 +398,8 @@ private Statement prepareStatement(StatementHandler handler, Log statementLog) t
 
 ### 参数处理
 
+![image-20210815203614888](mybatis.assets/image-20210815203614888.png)
+
 #### 单个参数
 
 1.默认不转换处理
