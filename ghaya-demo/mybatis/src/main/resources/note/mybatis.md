@@ -1,8 +1,18 @@
+
+
 # Mybatis
+
+> Mybatis的mapper.xml配置文件——详解
+>
+> https://blog.csdn.net/qq_42780864/article/details/88055480
+
+
 
 ![image-20210605202711222](mybatis.assets/image-20210605202711222.png)
 
 
+
+![image-20210819214618405](mybatis.assets/image-20210819214618405.png)
 
 ## 会话 SqlSession
 
@@ -14,7 +24,7 @@
 
 处理一些共性
 
-### 相关结构
+### 描述
 
 ![image-20210602150854473](mybatis.assets/image-20210602150854473.png)
 
@@ -42,7 +52,7 @@ BatchExecutor
 ## 缓存 Cache
 ### 一级缓存（会话级缓存）
 
-#### 特性
+#### 描述
 
 ​	PerpetualCache
 
@@ -181,7 +191,7 @@ spring配置文件整合mybatis  每次查询都会发起一个新的会话
 
 ### 二级缓存（应用级缓存）
 
-#### 特性
+#### 描述
 
 TransactionalCache
 
@@ -330,9 +340,11 @@ JDBC处理
 
 
 
-![image-20210613193043237](mybatis.assets/image-20210613193043237.png)
+<img src="mybatis.assets/image-20210613193043237.png" alt="image-20210613193043237" style="zoom: 80%;" />
 
-![image-20210711182832541](mybatis.assets/image-20210711182832541.png)
+<img src="mybatis.assets/image-20210711182832541.png" alt="image-20210711182832541" style="zoom: 50%;" />
+
+<img src="mybatis.assets/image-20210711183115800.png" alt="image-20210711183115800" style="zoom:50%;" />
 
 ### 源码
 
@@ -365,9 +377,9 @@ public interface StatementHandler {
 }
 ```
 
-![image-20210711183115800](mybatis.assets/image-20210711183115800.png)
 
-#### 预处理
+
+#### 预处理   (设置参数 参数处理 填充参数)
 
 SimpleExecutor.java
 
@@ -396,11 +408,11 @@ private Statement prepareStatement(StatementHandler handler, Log statementLog) t
   }
 ```
 
-### 参数处理
+#### 
 
-![image-20210815203614888](mybatis.assets/image-20210815203614888.png)
+<img src="mybatis.assets/image-20210815203614888.png" alt="image-20210815203614888" style="zoom: 50%;" />
 
-#### 单个参数
+##### 单个参数
 
 1.默认不转换处理
 
@@ -416,9 +428,11 @@ User selectByEveryThing1(Integer id);
 User selectByEveryThing2(@Param("pId") Integer id);
 ```
 
-假如设为#{id}则，Cause: org.apache.ibatis.binding.BindingException: Parameter 'id' not found. Available parameters are [pId, param1]
+假如设为#{id}则，
 
-#### 多个参数
+Cause: org.apache.ibatis.binding.BindingException: Parameter 'id' not found. Available parameters are [pId, param1]
+
+##### 多个参数
 
 1.默认
 
@@ -434,8 +448,8 @@ arg0... 和 param1...
 ```
 
 ```java
-@Select("select * from user where name = #{arg0} and email = #{arg1}")
-User selectByEveryThing3(String name,String email);
+@Select("select * from user where name = #{arg0} and email = #{param2}")
+	User selectByEveryThing3(String name,String email,Map map);
 ```
 
 {arg2=null, arg1=2, arg0=1, param3=null, param1=1, param2=2}
@@ -468,7 +482,7 @@ User selectByEveryThing4(@Param("name")String name,String email,Map map);
 
 
 
-### ParamNameResolver 参数转换过程
+##### ParamNameResolver 参数转换过程
 
 把Java Bean转换为JDBC参数，
 
@@ -481,8 +495,8 @@ User selectByEveryThing4(@Param("name")String name,String email,Map map);
 ParamNameResolver.java   
 
 ```java
-//@Select("select * from user where name = #{param1} and email = #{param2}")
-//User selectByEveryThing3(String name,String email,Map map);
+//@Select("select * from user where name = #{arg0} and email = #{param2}")
+//User selectByEveryThing3(String name,String email,@Param("map")Map map);
 
 //        HashMap hashMap = new HashMap();
 //        hashMap.put("this is key","这是值");
@@ -490,7 +504,7 @@ ParamNameResolver.java
 // 转换成默认或者附带的参数
 public Object getNamedParams(Object[] args) {
     //args  ["1","2",hahsMap{"this is key":"这是值"}]
-    //names [SortedMap{"0":"arg0","1":"arg1","2":"arg2"}]
+    //names [SortedMap{"0":"arg0","1":"arg1","2":"arg2"}]  处理前只有基于反射给的三个参数名
   final int paramCount = names.size();
   if (args == null || paramCount == 0) {
     return null;
@@ -509,6 +523,8 @@ public Object getNamedParams(Object[] args) {
       }
       i++;
     }
+    //处理后添加默认  {arg2={this is key=这是值}, arg1=2, arg0=1, param3={this is key=这是值}, param1=1, param2=2}
+    //有用@param指定  {arg1=2, arg0=1, map={this is key=这是值}, param3={this is key=这是值}, param1=1, param2=2}
     return param;
   }
 }
@@ -516,7 +532,7 @@ public Object getNamedParams(Object[] args) {
 
 
 
-### ParameterHandler 参数映射 填充
+##### ParameterHandler 参数映射 填充
 
 DefaultParameterHandler.java
 
@@ -565,9 +581,9 @@ public void setParameters(PreparedStatement ps) {
 
 boundSql
 
-![image-20210715235913224](mybatis.assets/image-20210715235913224.png)
+<img src="mybatis.assets/image-20210715235913224.png" alt="image-20210715235913224" style="zoom:80%;" />
 
-![image-20210716000006668](mybatis.assets/image-20210716000006668.png)
+<img src="mybatis.assets/image-20210716000006668.png" alt="image-20210716000006668" style="zoom: 80%;" />
 
 BaseTypeHandler.java
 
@@ -584,5 +600,248 @@ public void setNonNullParameter(PreparedStatement ps, int i, Object parameter, J
 }
 ```
 
-### ResultSetHandler 结果集处理
+
+
+#### 执行 
+
+##### ResultSetHandler 结果集处理
+
+<img src="mybatis.assets/image-20210819213607324.png" alt="image-20210819213607324" style="zoom: 50%;" />
+
+
+
+ResultContext.java 
+
+处理结果集用的，有一些对结果集获取和限制的方法
+
+
+
+结果集处理
+
+![image-20210819213029698](mybatis.assets/image-20210819213029698.png)
+
+
+
+SimpleStatementHandler.java
+
+```java
+@Override
+public <E> List<E> query(Statement statement, ResultHandler resultHandler) throws SQLException {
+  String sql = boundSql.getSql();
+  statement.execute(sql);
+  return resultSetHandler.handleResultSets(statement);
+}
+```
+
+DefaultResultSetHandler.java
+
+所有结果集映射逻辑都在这个里面
+
+```java
+
+public class DefaultResultSetHandler implements ResultSetHandler {
+    //...
+    //----------------
+    //处理多个结果集 
+    @Override
+    public List<Object> handleResultSets(Statement stmt) throws SQLException {
+        ErrorContext.instance().activity("handling results").object(mappedStatement.getId());
+
+        final List<Object> multipleResults = new ArrayList<>();
+
+        int resultSetCount = 0;
+        //获取结果集  @图1
+        ResultSetWrapper rsw = getFirstResultSet(stmt);
+
+        List<ResultMap> resultMaps = mappedStatement.getResultMaps();
+        int resultMapCount = resultMaps.size();
+        validateResultMapsCount(rsw, resultMapCount);
+        while (rsw != null && resultMapCount > resultSetCount) {
+            ResultMap resultMap = resultMaps.get(resultSetCount);
+            //处理结果集
+            handleResultSet(rsw, resultMap, multipleResults, null);
+            rsw = getNextResultSet(stmt);
+            cleanUpAfterHandlingResultSet();
+            resultSetCount++;
+        }
+        //多结果集分支
+        String[] resultSets = mappedStatement.getResultSets();
+        if (resultSets != null) {
+            while (rsw != null && resultSetCount < resultSets.length) {
+                ResultMapping parentMapping = nextResultMaps.get(resultSets[resultSetCount]);
+                if (parentMapping != null) {
+                    String nestedResultMapId = parentMapping.getNestedResultMapId();
+                    ResultMap resultMap = configuration.getResultMap(nestedResultMapId);
+                    handleResultSet(rsw, resultMap, null, parentMapping);
+                }
+                rsw = getNextResultSet(stmt);
+                cleanUpAfterHandlingResultSet();
+                resultSetCount++;
+            }
+        }
+
+        return collapseSingleResultList(multipleResults);
+    }
+
+    //----------------
+    //处理单个结果集
+    //一般都只有一个结果集
+    private void handleResultSet(ResultSetWrapper rsw,
+                                 ResultMap resultMap,
+                                 List<Object> multipleResults,
+                                 ResultMapping parentMapping) throws SQLException {
+        try {
+            if (parentMapping != null) {
+                handleRowValues(rsw, resultMap, null, RowBounds.DEFAULT, parentMapping);
+            } else {
+                if (resultHandler == null) {
+                    //ResultHandler 把结果集放进去  
+                    DefaultResultHandler defaultResultHandler = new DefaultResultHandler(objectFactory);
+                    //处理结果行
+                    handleRowValues(rsw, resultMap, defaultResultHandler, rowBounds, null);
+                    multipleResults.add(defaultResultHandler.getResultList());
+                } else {
+                    handleRowValues(rsw, resultMap, resultHandler, rowBounds, null);
+                }
+            }
+        } finally {
+            // issue #228 (close resultsets)
+            closeResultSet(rsw.getResultSet());
+        }
+    }
+
+    //----------------
+    public void handleRowValues(ResultSetWrapper rsw,
+                                ResultMap resultMap,
+                                ResultHandler<?> resultHandler,
+                                RowBounds rowBounds,
+                                ResultMapping parentMapping) throws SQLException {
+        if (resultMap.hasNestedResultMaps()) {
+            ensureNoRowBounds();
+            checkResultHandler();
+            //多结果集处理逻辑  嵌套查询等
+            handleRowValuesForNestedResultMap(rsw, resultMap, resultHandler, rowBounds, parentMapping);
+        } else {
+            //简单结果集处理 √
+            handleRowValuesForSimpleResultMap(rsw, resultMap, resultHandler, rowBounds, parentMapping);
+        }
+    }
+
+    //----------------
+    //简单结果集处理
+    private void handleRowValuesForSimpleResultMap(ResultSetWrapper rsw,
+                                                   ResultMap resultMap,
+                                                   ResultHandler<?> resultHandler,
+                                                   RowBounds rowBounds,
+                                                   ResultMapping parentMapping) throws SQLException {
+        //ResultContext
+        DefaultResultContext<Object> resultContext = new DefaultResultContext<>();
+        ResultSet resultSet = rsw.getResultSet();
+        skipRows(resultSet, rowBounds);//跳过指定行  分页等
+        while (shouldProcessMoreRows(resultContext, rowBounds) && !resultSet.isClosed() && resultSet.next()) {
+            ResultMap discriminatedResultMap = resolveDiscriminatedResultMap(resultSet, resultMap, null);
+            Object rowValue = getRowValue(rsw, discriminatedResultMap, null);//封装对象
+            storeObject(resultHandler, resultContext, rowValue, parentMapping, resultSet);
+        }
+    }
+
+    //----------------
+    //获取行数据
+    private Object getRowValue(ResultSetWrapper rsw,
+                               ResultMap resultMap,
+                               String columnPrefix) throws SQLException {
+        final ResultLoaderMap lazyLoader = new ResultLoaderMap();
+        //创建结果对象  基于xml中配置的type属性值
+        Object rowValue = createResultObject(rsw, resultMap, lazyLoader, columnPrefix);
+        if (rowValue != null && !hasTypeHandlerForResultObject(rsw, resultMap.getType())) {
+            final MetaObject metaObject = configuration.newMetaObject(rowValue);
+            boolean foundValues = this.useConstructorMappings;
+            //自动填充
+            if (shouldApplyAutomaticMappings(resultMap, false)) {
+                foundValues = applyAutomaticMappings(rsw, resultMap, metaObject, columnPrefix) || foundValues;
+            }
+            //手动填充
+            foundValues = applyPropertyMappings(rsw, resultMap, metaObject, lazyLoader, columnPrefix) || foundValues;
+            foundValues = lazyLoader.size() > 0 || foundValues;
+            rowValue = foundValues || configuration.isReturnInstanceForEmptyRow() ? rowValue : null;
+        }
+        return rowValue;
+    }
+
+    //----------------
+    //手动填充
+    private boolean applyPropertyMappings(ResultSetWrapper rsw,
+                                          ResultMap resultMap,
+                                          MetaObject metaObject,
+                                          ResultLoaderMap lazyLoader,
+                                          String columnPrefix) throws SQLException {
+        final List<String> mappedColumnNames = rsw.getMappedColumnNames(resultMap, columnPrefix);
+        boolean foundValues = false;
+        final List<ResultMapping> propertyMappings = resultMap.getPropertyResultMappings();
+        for (ResultMapping propertyMapping : propertyMappings) {
+            String column = prependPrefix(propertyMapping.getColumn(), columnPrefix);
+            if (propertyMapping.getNestedResultMapId() != null) {
+                // the user added a column attribute to a nested result map, ignore it
+                column = null;
+            } 
+            if (propertyMapping.isCompositeResult()
+                    || (column != null && mappedColumnNames.contains(column.toUpperCase(Locale.ENGLISH)))
+                    || propertyMapping.getResultSet() != null) {
+                Object value = getPropertyMappingValue(rsw.getResultSet(), metaObject, propertyMapping, lazyLoader, columnPrefix);
+                // issue #541 make property optional
+                final String property = propertyMapping.getProperty();
+                if (property == null) {
+                    continue;
+                } else if (value == DEFERRED) {
+                    foundValues = true;
+                    continue;
+                }
+                if (value != null) {
+                    foundValues = true;
+                }
+                if (value != null || (configuration.isCallSettersOnNulls() && !metaObject.getSetterType(property).isPrimitive())) {
+                    // gcode issue #377, call setter on nulls (value is not 'found')
+                    metaObject.setValue(property, value);
+                }
+            }
+        }
+        return foundValues;
+    }
+
+
+}
+```
+
+> 图1
+
+<img src="mybatis.assets/image-20210821210445908.png" alt="image-20210821210445908" style="zoom: 67%;" />
+
+```xml
+<!-- autoMapping = "true"  自动映射 
+	基于type类属性名词和返回字段列名称一一对应-->	
+<!-- result 指定列  手动映射
+	基于result标签配置 -->
+
+    <resultMap id="userResultMap" type="com.ghaya.mybatis.pojo.UserVo" autoMapping="true">
+        <result property="name" column="name"></result>
+    </resultMap>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

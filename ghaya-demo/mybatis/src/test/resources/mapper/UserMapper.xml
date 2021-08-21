@@ -16,23 +16,24 @@
     <!--<cache/>-->
     <!--<cache-ref namespace="com.ghaya.mybatis.dao.UserDao"/>-->
 
+    <resultMap id="userResultMap" type="com.ghaya.mybatis.pojo.UserVo" autoMapping="true">
 
-    <!--<resultMap id="BaseResultMap" type="com.bangdao.zparking.middleplat.master.dal.pojo.AlterApplicationDO">-->
-    <!--<id column="alter_application_id" jdbcType="VARCHAR" property="alterApplicationId" />-->
-    <!--<result column="status" jdbcType="INTEGER" property="status" />-->
-    <!--<result column="remark" jdbcType="VARCHAR" property="remark" />-->
-    <!--<result column="src_system_code" jdbcType="VARCHAR" property="srcSystemCode" />-->
-    <!--<result column="approve_mode_code" jdbcType="VARCHAR" property="approveModeCode" />-->
-    <!--<result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />-->
-    <!--<result column="process_time" jdbcType="TIMESTAMP" property="processTime" />-->
-    <!--<result column="approve_result" jdbcType="INTEGER" property="approveResult" />-->
-    <!--<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />-->
-    <!--<result column="create_by" jdbcType="VARCHAR" property="createBy" />-->
-    <!--<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />-->
-    <!--<result column="update_by" jdbcType="VARCHAR" property="updateBy" />-->
-    <!--<result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />-->
-    <!--<result column="version" jdbcType="INTEGER" property="version" />-->
-    <!--</resultMap>-->
+        <!--<id column="id" jdbcType="INTEGER" property="id" />-->
+        <!--<result column="age" jdbcType="INTEGER" property="age" />-->
+        <result property="name" column="name"></result>
+        <!-- 多结果集指定 resultSet=""-->
+        <!-- 嵌套查询 -->
+        <!--单条-->
+        <association property="userDesc"  column="id" select="selectDescByUserId">
+            <!--<result property="id" column="d_id"></result>-->
+            <!--<result property="userId" column="user_id"></result>-->
+        </association>
+        <!--多条-->
+        <collection property="role"  column="id" select="selectRoleByUserId">
+
+        </collection>
+
+    </resultMap>
     <sql id="baseFiled">
         id,name,age,email
   </sql>

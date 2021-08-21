@@ -43,7 +43,7 @@ public class ParamTest {
 //        System.out.println(user2);
         HashMap hashMap = new HashMap();
         hashMap.put("this is key","这是值");
-        User user3 = mapper.selectByEveryThing3("1","2",1,hashMap);
+        User user3 = mapper.selectByEveryThing3("1","2",hashMap);
         System.out.println(user3);
 //        User user4 = mapper.selectByEveryThing4("1","2",null);
 //        System.out.println(user4);
