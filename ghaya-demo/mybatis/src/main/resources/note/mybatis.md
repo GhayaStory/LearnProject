@@ -492,6 +492,8 @@ User selectByEveryThing4(@Param("name")String name,String email,Map map);
 
 ##### 
 
+<img src="mybatis.assets/image-20210822163453121.png" alt="image-20210822163453121" style="zoom: 80%;" />
+
 ParamNameResolver.java   
 
 ```java
@@ -535,6 +537,8 @@ public Object getNamedParams(Object[] args) {
 ##### ParameterHandler 参数映射 填充
 
 DefaultParameterHandler.java
+
+<img src="mybatis.assets/image-20210822164042184.png" alt="image-20210822164042184" style="zoom:80%;" />
 
 ```java
 @Override
@@ -833,9 +837,79 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
 
 
+## 反射工具类 MeTaObject
+
+### 描述
+
+mybatis提供的反射工具类，
+
+作用：开发一些底层javabean组件时可以使用。
+
+![image-20210822235805443](mybatis.assets/image-20210822235805443.png)
+
+示例流程
+
+![image-20210823000446542](mybatis.assets/image-20210823000446542.png)
+
+### 源码
+
+MetaObject.java
+
+```java
+ public Object getValue(String name) {
+    PropertyTokenizer prop = new PropertyTokenizer(name);
+    if (prop.hasNext()) {
+      MetaObject metaValue = metaObjectForProperty(prop.getIndexedName());
+      if (metaValue == SystemMetaObject.NULL_META_OBJECT) {
+        return null;
+      } else {
+        return metaValue.getValue(prop.getChildren());
+      }
+    } else {
+      return objectWrapper.get(prop);
+    }
+  }
+```
 
 
 
+分词器    PropertyTokenizer.java
+
+表示式由分词解析器处理
+
+```java
+public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
+  private String name;
+  private final String indexedName;
+  private String index;
+  private final String children;
+
+  public PropertyTokenizer(String fullname) {
+    int delim = fullname.indexOf('.');
+    if (delim > -1) {
+      name = fullname.substring(0, delim);
+      children = fullname.substring(delim + 1);
+    } else {
+      name = fullname;
+      children = null;
+    }
+    indexedName = name;
+    delim = name.indexOf('[');
+    if (delim > -1) {
+      index = name.substring(delim + 1, name.length() - 1);
+      name = name.substring(0, delim);
+    }
+  }
+   
+  @Override
+  public PropertyTokenizer next() {
+    return new PropertyTokenizer(children);
+  }
+}
+
+```
+
+![image-20210823001613226](mybatis.assets/image-20210823001613226.png)
 
 
 
