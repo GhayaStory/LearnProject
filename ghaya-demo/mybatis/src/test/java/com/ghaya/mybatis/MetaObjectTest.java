@@ -27,7 +27,7 @@ public class MetaObjectTest {
 
         //mybatis在操作对象时并不知道是什么类型
         Object obj  = blog;
-        //反射取值
+        //手动反射取值
         //根据配置可以知道一些属性和方法名
         Method getTitles = null;
         try {
@@ -46,7 +46,7 @@ public class MetaObjectTest {
         System.out.println("2--------------------");
 
 
-        //metaObject
+        //用metaObject反射取值
         Configuration configuration = new Configuration();
         MetaObject metaObject = configuration.newMetaObject(obj);
         //直接操作属性
@@ -56,17 +56,17 @@ public class MetaObjectTest {
         //自动创建属性对象
         metaObject.setValue("author.name","博客作者本人");//可以自动创建User对象
         //自动查找属性名，下划线转驼峰
-        String pn = metaObject.findProperty("author.phone_number", true);//驼峰查找
-        metaObject.setValue(pn,"驼峰查找来的电话");
+        String phoneNumberKey = metaObject.findProperty("author.phone_number", true);//驼峰查找
+        metaObject.setValue(phoneNumberKey,"驼峰查找属性名来的电话");
         System.out.println(metaObject.getValue("author"));
         //数组类型 设置  以及索引查找
         System.out.println("2--------------------数组");
 
         ArrayList<Object> objects = new ArrayList();
         objects.add(null);
-        metaObject.setValue("author.account",objects);
+        metaObject.setValue("author.account",objects);//需要手动创建
         System.out.println(metaObject.getValue("author.account"));
-        metaObject.setValue("author.account[0]",new Account().setAccount("账号1"));//缺少设置一个行
+        metaObject.setValue("author.account[0]",new Account().setAccount("账号1"));
         System.out.println(metaObject.getValue("author.account[0].account"));
         //Map  一样的
         metaObject.setValue("author.map",new HashMap<>());
@@ -86,8 +86,11 @@ public class MetaObjectTest {
         MetaObject metaObject = configuration.newMetaObject(obj);
         ArrayList<Object> objects = new ArrayList();
         objects.add(null);
+        objects.add(null);
+        objects.add(null);
         metaObject.setValue("author.account",objects);
         metaObject.setValue("author.account[0]",new Account().setAccount("账号1"));//缺少设置一个行
+        metaObject.setValue("author.account[1]",new Account().setAccount("账号2"));//缺少设置一个行
         Object value = metaObject.getValue("author.account[0].account");
         System.out.println(value);
     }

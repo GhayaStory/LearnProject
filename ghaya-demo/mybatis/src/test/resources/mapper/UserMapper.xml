@@ -29,7 +29,7 @@
             <!--<result property="userId" column="user_id"></result>-->
         </association>
         <!--多条-->
-        <collection property="role"  column="id" select="selectRoleByUserId">
+        <collection property="roles"  column="id" select="selectRoleByUserId">
 
         </collection>
 

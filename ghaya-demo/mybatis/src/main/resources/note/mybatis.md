@@ -348,6 +348,8 @@ JDBC处理
 
 ### 源码
 
+sqlnode
+
 ```java
 public interface StatementHandler {
 
@@ -727,7 +729,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
             handleRowValuesForNestedResultMap(rsw, resultMap, resultHandler, rowBounds, parentMapping);
         } else {
             //简单结果集处理 √
-            handleRowValuesForSimpleResultMap(rsw, resultMap, resultHandler, rowBounds, parentMapping);
+            ForSimpleResultMap(rsw, resultMap, resultHandler, rowBounds, parentMapping);
         }
     }
 
@@ -866,14 +868,117 @@ MetaObject.java
         return metaValue.getValue(prop.getChildren());
       }
     } else {
+        //获取值并返回
       return objectWrapper.get(prop);
+    }
+  }
+
+
+  public void setValue(String name, Object value) {
+    PropertyTokenizer prop = new PropertyTokenizer(name);
+    if (prop.hasNext()) {
+      MetaObject metaValue = metaObjectForProperty(prop.getIndexedName());
+      if (metaValue == SystemMetaObject.NULL_META_OBJECT) {
+        if (value == null) {
+          // don't instantiate child path if value is null
+          return;
+        } else {
+          metaValue = objectWrapper.instantiatePropertyValue(name, prop, objectFactory);
+        }
+      }
+      metaValue.setValue(prop.getChildren(), value);
+    } else {
+        //通过反射设值
+      objectWrapper.set(prop, value);
+    }
+  }
+
+
+  private Object getBeanProperty(PropertyTokenizer prop, Object object) {
+    try {
+        //从解析表达式后缓存起来的池子里，获取对应的方法
+      Invoker method = metaClass.getGetInvoker(prop.getName());
+      try {
+          //直接反射调用  实体类的 get  set 方法
+        return method.invoke(object, NO_ARGUMENTS);
+      } catch (Throwable t) {
+        throw ExceptionUtil.unwrapThrowable(t);
+      }
+    } catch (RuntimeException e) {
+      throw e;
+    } catch (Throwable t) {
+      throw new ReflectionException("Could not get property '" + prop.getName() + "' from " + object.getClass() + ".  Cause: " + t.toString(), t);
+    }
+  }
+
+```
+
+BeanWrapper.java
+
+```java
+  @Override
+  public Object get(PropertyTokenizer prop) {
+    if (prop.getIndex() != null) {//判断有没有索引  
+        //集合
+      Object collection = resolveCollection(prop, object);
+      return getCollectionValue(prop, collection);
+    } else {
+      return getBeanProperty(prop, object);
+    }
+  }
+
+
+  @Override
+  public void set(PropertyTokenizer prop, Object value) {
+    if (prop.getIndex() != null) {//集合
+      Object collection = resolveCollection(prop, object);
+      setCollectionValue(prop, collection, value);
+    } else {
+      setBeanProperty(prop, object, value);
     }
   }
 ```
 
+BaseWrapper.java
+
+```java
+protected Object getCollectionValue(PropertyTokenizer prop, Object collection) {
+  if (collection instanceof Map) {
+    return ((Map) collection).get(prop.getIndex());
+  } else {
+    int i = Integer.parseInt(prop.getIndex());
+    if (collection instanceof List) {
+      return ((List) collection).get(i);
+    } else if (collection instanceof Object[]) {
+      return ((Object[]) collection)[i];
+    } else if (collection instanceof char[]) {
+      return ((char[]) collection)[i];
+    } else if (collection instanceof boolean[]) {
+      return ((boolean[]) collection)[i];
+    } else if (collection instanceof byte[]) {
+      return ((byte[]) collection)[i];
+    } else if (collection instanceof double[]) {
+      return ((double[]) collection)[i];
+    } else if (collection instanceof float[]) {
+      return ((float[]) collection)[i];
+    } else if (collection instanceof int[]) {
+      return ((int[]) collection)[i];
+    } else if (collection instanceof long[]) {
+      return ((long[]) collection)[i];
+    } else if (collection instanceof short[]) {
+      return ((short[]) collection)[i];
+    } else {
+      throw new ReflectionException("The '" + prop.getName() + "' property of " + collection + " is not a List or Array.");
+    }
+  }
+}
+```
 
 
-分词器    PropertyTokenizer.java
+
+#### 分词器    
+
+PropertyTokenizer.java
 
 表示式由分词解析器处理
 
