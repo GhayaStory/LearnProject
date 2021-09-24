@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * MetaObject mybatis提供的反射获取工具类
+ * PropertyTokenizer  metaObject中
+ *
+ */
 public class MetaObjectTest {
 
     @Test

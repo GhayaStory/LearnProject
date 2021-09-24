@@ -28,8 +28,8 @@ public class LogAOP {
 
     }
 //    @Before("pointcut()")
-//    @Before("execution(* com.ghaya.springaop.service..*(..))")
-    @Before("pointcut()")
+    @Before("execution(* com.ghaya.springaop.service..*(..))")
+//    @Before("pointcut()")
     public void before(JoinPoint joinPoint){
         System.out.println("before------------Log");
         MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();//方法签名

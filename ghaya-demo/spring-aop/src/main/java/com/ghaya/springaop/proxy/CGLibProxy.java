@@ -38,5 +38,7 @@ public class CGLibProxy<T> implements MethodInterceptor {
     public static void main(String[] args) {
         ProductImpl product = new CGLibProxy<ProductImpl>(new ProductImpl()).getProxy();
         product.show("CGLib动态代理");
+
+
     }
 }
